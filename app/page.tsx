@@ -8,7 +8,6 @@ import {
   Braces,
   CheckCircle2,
   Code2,
-  DatabaseZap,
   FileInput,
   Menu,
   Moon,
@@ -21,7 +20,9 @@ import {
   X,
 } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { FormEvent, useEffect, useState } from 'react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import type { SyntheticEvent } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -126,15 +127,16 @@ function Flow({ steps, dark = false }: { steps: string[]; dark?: boolean }) {
 }
 
 export default function Home() {
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('theme') === 'dark';
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [formNote, setFormNote] = useState('');
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    const saved = localStorage.getItem('theme');
-    setDark(saved ? saved === 'dark' : false);
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -155,7 +157,7 @@ export default function Home() {
         transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
       };
 
-  const submitForm = (event: FormEvent<HTMLFormElement>) => {
+  const submitForm = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormNote('This form is ready for a contact service to be connected. No message has been sent.');
   };
@@ -185,9 +187,13 @@ export default function Home() {
 
       <section className="hero" id="top">
         <motion.div className="hero-copy" initial={reduceMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .6 }}>
+          <div className="hero-profile">
+            <Image src="/images/profile12.png" alt="Muhammad Umer" width={96} height={96} />
+            <div><strong>Muhammad Umer</strong><span>AI Automation Engineer</span></div>
+          </div>
           <p className="eyebrow"><span /> Muhammad Umer · AI Automation Engineer</p>
           <h1>I Build AI Systems That Eliminate Repetitive Work.</h1>
-          <p className="hero-intro">I design and build practical automation systems that connect AI, APIs, business tools, and workflows to turn repetitive manual work into reliable processes.</p>
+          <p className="hero-intro">I design and build practical automation systems with Python, AI, APIs, and workflow logic, turning repetitive manual work into reliable production processes.</p>
           <div className="hero-actions">
             <a className="button button-primary" href="#work">View My Work <ArrowDownRight size={17} /></a>
             <a className="button button-secondary" href="#contact">Let&apos;s Work Together <ArrowUpRight size={16} /></a>
@@ -200,8 +206,8 @@ export default function Home() {
           <div className="system-sequence">
             {[
               ['01', 'Trigger', 'Business event'],
-              ['02', 'Logic', 'Python rules'],
-              ['03', 'AI / API', 'Processing'],
+              ['02', 'AI / API', 'Processing'],
+              ['03', 'Logic', 'Python rules'],
               ['04', 'Action', 'Tool update'],
               ['05', 'Result', 'Reliable output'],
             ].map(([number, label, detail], index) => (
@@ -256,12 +262,12 @@ export default function Home() {
               <header><span>{project.number} / 04</span><h3>{project.title}</h3></header>
               <div className="case-analysis">
                 <div><h4>Problem</h4><p>{project.problem}</p></div>
-                <div><h4>Solution</h4><p>{project.solution}</p></div>
-                <div><h4>Technical approach</h4><p>{project.technical}</p></div>
+                <div><h4>Automation</h4><p>{project.solution}</p></div>
+                <div><h4>Technology</h4><p>{project.technical}</p></div>
               </div>
               <div className="case-workflow"><span>Workflow</span><Flow steps={project.workflow} /></div>
               <div className="case-result">
-                <div><span>Result</span><p>{project.result}</p></div>
+                <div><span>Outcome</span><p>{project.result}</p></div>
                 <Dialog>
                   <DialogTrigger className="case-trigger">Technical summary <ArrowUpRight size={16} /></DialogTrigger>
                   <DialogContent className="case-dialog">
@@ -272,9 +278,9 @@ export default function Home() {
                     </DialogHeader>
                     <div className="case-steps">
                       <div><span>01</span><h4>Problem</h4><p>{project.problem}</p></div>
-                      <div><span>02</span><h4>Solution</h4><p>{project.solution}</p></div>
-                      <div><span>03</span><h4>Technical approach</h4><p>{project.technical}</p></div>
-                      <div><span>04</span><h4>Result</h4><p>{project.result}</p></div>
+                      <div><span>02</span><h4>Automation</h4><p>{project.solution}</p></div>
+                      <div><span>03</span><h4>Technology</h4><p>{project.technical}</p></div>
+                      <div><span>04</span><h4>Outcome</h4><p>{project.result}</p></div>
                     </div>
                     <div className="tag-list">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
                   </DialogContent>
@@ -348,7 +354,7 @@ export default function Home() {
       </motion.section>
 
       <motion.section className="section about-detail" {...reveal}>
-        <div className="about-mark" aria-hidden="true">MU</div>
+        <div className="about-portrait"><Image src="/images/profile12.png" alt="Muhammad Umer, AI Automation Engineer" width={780} height={975} /></div>
         <div className="about-copy"><p className="section-kicker">About Muhammad Umer</p><h2>Practical Engineering for Business Workflows</h2>
           <p>I work where Python, AI, APIs, automation, and business operations meet.</p>
           <p>My focus is understanding how a process works, finding the points where manual effort or disconnected tools create friction, and building a system that removes that friction without hiding complexity behind a demo.</p>
@@ -376,7 +382,7 @@ export default function Home() {
             <div className="form-row"><label>Name<input name="name" type="text" autoComplete="name" required placeholder="Your name" /></label><label>Email<input name="email" type="email" autoComplete="email" required placeholder="you@example.com" /></label></div>
             <label>Workflow<textarea name="message" required rows={5} placeholder="What happens today, and where does the manual work slow things down?" /></label>
             <button className="button button-primary submit-button" type="submit">Start a Conversation <Send size={16} /></button>
-            {formNote && <p className="form-note" role="status">{formNote}</p>}
+            {formNote && <output className="form-note">{formNote}</output>}
           </form>
         </motion.div>
       </section>

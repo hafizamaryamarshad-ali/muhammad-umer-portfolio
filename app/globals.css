@@ -75,6 +75,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .eyebrow span { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 12%, transparent); }
 .hero h1 { max-width: 760px; margin: 0; font-size: clamp(3.2rem, 6.2vw, 6.4rem); line-height: .96; letter-spacing: -.072em; font-weight: 620; text-wrap: balance; }
 .hero-intro { max-width: 660px; margin: 30px 0 0; color: var(--muted-foreground); font-size: clamp(1rem, 1.35vw, 1.16rem); line-height: 1.75; }
+.hero-profile { display: flex; align-items: center; gap: 12px; margin-bottom: 23px; }
+.hero-profile img { width: 48px; height: 48px; object-fit: cover; border: 2px solid var(--card); border-radius: 50%; box-shadow: 0 0 0 1px var(--border), 0 8px 20px rgb(16 24 40 / 12%); }
+.hero-profile div { display: flex; flex-direction: column; gap: 3px; }
+.hero-profile strong { font-size: .86rem; letter-spacing: -.01em; }
+.hero-profile span { color: var(--muted-foreground); font-family: var(--font-geist-mono); font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 34px; }
 .button { min-height: 48px; padding: 0 19px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid var(--border); border-radius: 10px; font-size: .9rem; font-weight: 620; transition: transform .2s, box-shadow .2s, background .2s; }
 .button:hover { transform: translateY(-2px); }
@@ -294,6 +299,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .why-content blockquote { margin: 32px 0 0; padding: 24px 0 0 25px; border-top: 1px solid var(--border); border-left: 2px solid var(--accent); color: var(--foreground); font-size: 1.08rem; line-height: 1.65; }
 .about-detail { display: grid; grid-template-columns: .78fr 1.22fr; gap: 9vw; align-items: center; }
 .about-detail .about-mark { width: 100%; }
+.about-portrait { width: min(100%, 390px); aspect-ratio: 4 / 5; overflow: hidden; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); box-shadow: 0 24px 60px rgb(16 24 40 / 10%); }
+.about-portrait img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center top; filter: saturate(.88); }
 .real-work-section { padding-top: 50px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 7vw; }
 .real-work-heading h2 { font-size: clamp(2.3rem, 4vw, 3.9rem); }
 .real-work-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border); }
@@ -406,6 +413,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .why-inner, .about-detail, .real-work-section { grid-template-columns: 1fr; }
   .why-inner { gap: 46px; }
   .about-detail .about-mark { width: min(460px, 88%); }
+  .about-portrait { width: min(460px, 88%); }
   .real-work-section { gap: 50px; }
 }
 
