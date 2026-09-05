@@ -93,6 +93,12 @@ const process = [
   ['Improve', 'Troubleshoot, monitor, and refine the system as requirements evolve.'],
 ];
 
+const experience = [
+  'Endpoint',
+  'Endpointech',
+  'Southwest Urgent Care',
+];
+
 export default function Home() {
   const [dark, setDark] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -247,6 +253,29 @@ export default function Home() {
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="section experience-section reveal" aria-labelledby="experience-heading">
+        <div className="section-heading">
+          <div>
+            <p className="section-kicker">Client work</p>
+            <h2 id="experience-heading">Professional<br />Experience</h2>
+          </div>
+          <p>Selected companies and teams I&apos;ve worked with across automation, software, and technical projects.</p>
+        </div>
+        <div className="experience-list">
+          {experience.map((company, index) => (
+            <article className="experience-item" key={company}>
+              <span className="experience-number">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{company}</h3>
+                <p>Role and project details to be added.</p>
+              </div>
+              <span className="experience-status">Professional work</span>
+            </article>
+          ))}
+        </div>
+        <p className="experience-note">Specific roles, dates, and project details will be included when available.</p>
       </section>
 
       <section className="section stack-section reveal">

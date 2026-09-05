@@ -16,6 +16,14 @@ export const metadata: Metadata = {
   title: 'Muhammad Umer | AI Automation Engineer',
   description:
     'Muhammad Umer is an AI Automation Engineer specializing in Python, AI-powered workflows, API integrations, business automation, and practical software systems.',
+  keywords: [
+    'Muhammad Umer',
+    'AI Automation Engineer',
+    'Python Developer',
+    'AI Automation',
+    'API Integrations',
+    'Workflow Automation',
+  ],
   icons: {
     icon: '/icon.svg',
   },
