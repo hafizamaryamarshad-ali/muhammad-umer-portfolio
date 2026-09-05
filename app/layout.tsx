@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://muhammad-umer-portfolio-kappa.vercel.app'),
   title: 'Muhammad Umer | AI Automation Engineer',
   description:
     'Muhammad Umer is an AI Automation Engineer specializing in Python, AI-powered workflows, API integrations, business automation, and practical software systems.',
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     description:
       'Python automation, AI-powered workflows, API integrations, and practical software systems.',
     type: 'website',
-    url: 'https://muhammad-umer-automation.aiuser716378.chatgpt.site',
+    url: 'https://muhammad-umer-portfolio-kappa.vercel.app',
   },
 };
 
