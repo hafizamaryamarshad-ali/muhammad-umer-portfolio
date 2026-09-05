@@ -2,21 +2,25 @@
 
 import {
   ArrowDownRight,
+  ArrowRight,
   ArrowUpRight,
   Bot,
   Braces,
+  CheckCircle2,
   Code2,
   DatabaseZap,
   FileInput,
-  GitBranch,
   Menu,
   Moon,
   PlugZap,
   Send,
+  ShieldCheck,
   Sun,
   Workflow,
+  Wrench,
   X,
 } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { FormEvent, useEffect, useState } from 'react';
 import {
   Dialog,
@@ -27,101 +31,114 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-const capabilities = [
-  { icon: Workflow, title: 'AI Automation', text: 'AI-powered workflows and intelligent systems designed to reduce repetitive manual work.' },
-  { icon: Braces, title: 'Python Automation', text: 'Custom Python scripts, backend services, browser automation, data processing, and business logic.' },
-  { icon: PlugZap, title: 'API Integrations', text: 'Connect CRMs, applications, databases, AI services, email systems, and other business tools through APIs.' },
-  { icon: Bot, title: 'AI Agents', text: 'Practical AI agents designed to handle specific business tasks, information processing, and workflow actions.' },
-  { icon: FileInput, title: 'Document & Data Automation', text: 'Automated extraction, transformation, validation, and processing of structured and unstructured data.' },
-  { icon: Code2, title: 'Web & App Development', text: 'Custom web applications and tools that provide usable interfaces around automated workflows.' },
+const navigation = [
+  ['Home', 'top'],
+  ['About', 'about'],
+  ['Work', 'work'],
+  ['Experience', 'experience'],
+  ['Stack', 'stack'],
+  ['Contact', 'contact'],
+];
+
+const automationAreas = [
+  { icon: Workflow, title: 'Business Processes', text: 'Replace repetitive manual tasks with automated workflows that follow clear business rules.', flow: ['Trigger', 'Logic', 'Action'] },
+  { icon: FileInput, title: 'Data & Document Processing', text: 'Extract, transform, validate, and route structured or unstructured information automatically.', flow: ['Input', 'Extract', 'Validate'] },
+  { icon: PlugZap, title: 'API Integrations', text: 'Connect CRMs, business applications, databases, and external services through dependable APIs.', flow: ['Event', 'API', 'Sync'] },
+  { icon: Bot, title: 'AI Workflows', text: 'Use LLMs and AI services where they add practical judgment or information processing.', flow: ['Context', 'AI', 'Decision'] },
+  { icon: Braces, title: 'Browser Automation', text: 'Automate controlled browser tasks when a suitable direct integration is unavailable.', flow: ['Page', 'Logic', 'Action'] },
+  { icon: Code2, title: 'Internal Tools', text: 'Build focused interfaces around automation so teams can operate workflows consistently.', flow: ['User', 'Tool', 'Workflow'] },
 ];
 
 const projects = [
   {
     number: '01',
     title: 'Automated Business Data Entry',
-    description: 'Designed an automation workflow for moving information between business systems, reducing repetitive manual data-entry tasks and improving consistency.',
+    problem: 'Information must be copied between business systems, creating repetitive work and inconsistent records.',
+    solution: 'A controlled data movement workflow that validates, transforms, and routes records between systems.',
+    technical: 'Python, APIs, automation logic, field mapping, and data validation.',
+    workflow: ['Source data', 'Validation', 'Transformation', 'System update'],
+    result: 'Designed to reduce repetitive manual entry and improve workflow consistency.',
     tags: ['Python', 'APIs', 'Automation', 'Data Processing'],
-    problem: 'Business information often needs to be copied between tools by hand, creating avoidable repetition and inconsistent records.',
-    approach: 'Map the source and destination fields, define validation rules, and identify where human review is still valuable.',
-    automation: 'A Python-led workflow receives records, validates and transforms the data, then sends it to the appropriate system through APIs.',
   },
   {
     number: '02',
     title: 'AI Document Processing Workflow',
-    description: 'Built a workflow concept for extracting useful information from documents, processing the data, and preparing structured output for downstream business processes.',
+    problem: 'Useful information is locked in documents and must be prepared manually for downstream processes.',
+    solution: 'A document pipeline that extracts required information and prepares dependable structured output.',
+    technical: 'Python, OCR, AI-assisted extraction, confidence checks, and API-ready formatting.',
+    workflow: ['Upload', 'Extraction', 'Validation', 'Structured output'],
+    result: 'Designed to make document information easier to process, verify, and reuse.',
     tags: ['Python', 'OCR', 'AI', 'Data Extraction', 'APIs'],
-    problem: 'Useful information is often locked inside varied document formats and must be manually re-entered before it can be used.',
-    approach: 'Define the required fields, extraction path, confidence checks, and a consistent structured output.',
-    automation: 'Documents move through OCR and AI-assisted extraction, followed by validation and API-ready formatting.',
   },
   {
     number: '03',
     title: 'CRM & Workflow Integration',
-    description: 'Created an integration-focused workflow connecting business applications through APIs so information can move between systems without repeated manual intervention.',
+    problem: 'Disconnected tools require repeated updates and make it difficult to keep business information aligned.',
+    solution: 'An event-driven integration that coordinates changes between applications without duplicate manual work.',
+    technical: 'REST APIs, webhooks, Python transformation logic, authentication, and error handling.',
+    workflow: ['Trigger', 'API', 'Data processing', 'CRM update', 'Notification'],
+    result: 'Designed to move information reliably between systems and reduce fragmented processes.',
     tags: ['Python', 'REST APIs', 'Webhooks', 'Automation'],
-    problem: 'Disconnected business tools create duplicate updates and make it difficult to keep information aligned.',
-    approach: 'Identify the system of record, map event triggers, and define safe synchronization behavior.',
-    automation: 'Webhooks trigger a Python integration layer that validates incoming data and coordinates changes across APIs.',
   },
   {
     number: '04',
     title: 'Automated Web Workflow',
-    description: 'Built browser-based automation for repetitive web processes, including controlled interaction, data collection, validation, and workflow execution.',
+    problem: 'A repetitive web process must be completed through an interface that does not expose a suitable API.',
+    solution: 'A browser automation flow with controlled interaction, observable checkpoints, and exception handling.',
+    technical: 'Python, Playwright, page-state checks, validation, and structured data collection.',
+    workflow: ['Browser input', 'Automation logic', 'Validation', 'Action'],
+    result: 'Designed to execute repeatable browser tasks while making failures visible and recoverable.',
     tags: ['Python', 'Playwright', 'Browser Automation', 'Data Processing'],
-    problem: 'Some repetitive workflows rely on web interfaces that do not provide a suitable direct integration.',
-    approach: 'Break the process into observable steps, define page-state checks, and plan for timeouts and unexpected responses.',
-    automation: 'A Playwright-based flow performs controlled interactions, collects required data, validates each step, and reports exceptions.',
   },
 ];
 
 const stack = [
-  ['Languages', ['Python', 'JavaScript', 'Dart']],
+  ['Programming', ['Python', 'JavaScript', 'Dart']],
   ['AI & Automation', ['AI APIs', 'LLMs', 'AI Agents', 'Workflow Automation', 'Prompt Engineering']],
-  ['Backend & APIs', ['REST APIs', 'FastAPI', 'Firebase', 'Webhooks', 'Authentication']],
-  ['Web & App', ['Next.js', 'React', 'Flutter']],
-  ['Automation', ['Playwright', 'Browser Automation', 'Data Processing', 'API Automation']],
-  ['Tools', ['Git', 'GitHub', 'VS Code', 'Canva']],
+  ['APIs & Backend', ['REST APIs', 'FastAPI', 'Webhooks', 'Authentication', 'Firebase']],
+  ['Web & App Development', ['Next.js', 'React', 'Flutter']],
+  ['Automation & Data', ['Playwright', 'Browser Automation', 'Data Processing', 'API Automation']],
+  ['Development Tools', ['Git', 'GitHub', 'VS Code']],
 ];
 
 const process = [
-  ['Understand', 'Identify the repetitive task, bottleneck, business requirement, and desired outcome.'],
-  ['Design', 'Map the workflow, integrations, data flow, automation logic, and failure points.'],
-  ['Build', 'Develop the automation using the right combination of Python, APIs, AI, and application logic.'],
-  ['Test', 'Test normal flows, edge cases, failures, unexpected inputs, and integration issues.'],
-  ['Deploy', 'Put the system into a usable production workflow.'],
-  ['Improve', 'Troubleshoot, monitor, and refine the system as requirements evolve.'],
+  ['Understand', 'Understand the existing manual workflow, business problem, and required outcome.'],
+  ['Map', 'Break the workflow into triggers, inputs, logic, decisions, failure points, and outputs.'],
+  ['Build', 'Develop with the right combination of Python, APIs, AI services, browser automation, and integrations.'],
+  ['Test', 'Test edge cases, failures, data handling, authentication, and workflow reliability.'],
+  ['Deploy', 'Put the system into the environment where the work needs to happen.'],
+  ['Improve', 'Monitor, troubleshoot, optimize, and refine the workflow as requirements evolve.'],
 ];
 
-const experience = [
-  'Endpoint',
-  'Endpointech',
-  'Southwest Urgent Care',
-];
+const experience = ['Endpoint', 'Endpointech', 'Southwest Urgent Care'];
+
+function Flow({ steps, dark = false }: { steps: string[]; dark?: boolean }) {
+  return (
+    <div className={`flow-line ${dark ? 'flow-dark' : ''}`} aria-label={steps.join(' to ')}>
+      {steps.map((step, index) => (
+        <span className="flow-step" key={step}>
+          <b>{step}</b>
+          {index < steps.length - 1 && <ArrowRight aria-hidden="true" />}
+        </span>
+      ))}
+    </div>
+  );
+}
 
 export default function Home() {
   const [dark, setDark] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [formNote, setFormNote] = useState('');
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     const saved = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setDark(saved ? saved === 'dark' : prefersDark);
+    setDark(saved ? saved === 'dark' : false);
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add('is-visible')),
-      { threshold: 0.12 },
-    );
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      observer.disconnect();
-    };
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
@@ -129,26 +146,30 @@ export default function Home() {
     localStorage.setItem('theme', dark ? 'dark' : 'light');
   }, [dark]);
 
+  const reveal = reduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 24 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.14 },
+        transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
+      };
+
   const submitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormNote('This form is ready for a contact service to be connected. No message has been sent.');
   };
 
-  const closeMenu = () => setMenuOpen(false);
-
   return (
     <main>
       <nav className={`site-nav ${scrolled ? 'nav-scrolled' : ''}`} aria-label="Primary navigation">
-        <a className="wordmark" href="#top" aria-label="Muhammad Umer, home" onClick={closeMenu}>
+        <a className="wordmark" href="#top" aria-label="Muhammad Umer, home" onClick={() => setMenuOpen(false)}>
           <span>MU</span>
-          Muhammad Umer
+          <span className="wordmark-copy"><strong>Muhammad Umer</strong><small>AI Automation Engineer</small></span>
         </a>
         <div className="nav-links">
-          <a href="#work">Work</a>
-          <a href="#capabilities">Capabilities</a>
-          <a href="#process">Process</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
+          {navigation.map(([label, id]) => <a href={`#${id}`} key={id}>{label}</a>)}
+          <a className="nav-cta" href="#contact">Let&apos;s Talk <ArrowUpRight size={14} /></a>
           <button className="theme-toggle" type="button" onClick={() => setDark((value) => !value)} aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}>
             {dark ? <Sun size={16} /> : <Moon size={16} />}
           </button>
@@ -157,189 +178,207 @@ export default function Home() {
           </button>
         </div>
         <div className={`mobile-menu ${menuOpen ? 'open' : ''}`} id="mobile-menu">
-          {['Work', 'Capabilities', 'Process', 'About', 'Contact'].map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`} onClick={closeMenu}>{item}<ArrowDownRight size={17} /></a>
-          ))}
+          {navigation.map(([label, id]) => <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}<ArrowDownRight size={17} /></a>)}
+          <a href="#contact" className="mobile-cta" onClick={() => setMenuOpen(false)}>Let&apos;s Talk <ArrowUpRight size={17} /></a>
         </div>
       </nav>
 
       <section className="hero" id="top">
-        <div className="hero-copy">
-          <p className="eyebrow"><span /> AI Automation Engineer</p>
+        <motion.div className="hero-copy" initial={reduceMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .6 }}>
+          <p className="eyebrow"><span /> Muhammad Umer · AI Automation Engineer</p>
           <h1>I Build AI Systems That Eliminate Repetitive Work.</h1>
-          <p className="hero-intro">I build practical automation systems using Python, APIs, AI models, web technologies, and workflow integrations — focused on solving real operational problems rather than adding AI for the sake of AI.</p>
+          <p className="hero-intro">I design and build practical automation systems that connect AI, APIs, business tools, and workflows to turn repetitive manual work into reliable processes.</p>
           <div className="hero-actions">
             <a className="button button-primary" href="#work">View My Work <ArrowDownRight size={17} /></a>
-            <a className="button button-secondary" href="#contact">Let&apos;s Build Something</a>
+            <a className="button button-secondary" href="#contact">Let&apos;s Work Together <ArrowUpRight size={16} /></a>
           </div>
-          <p className="tool-line">Python <i /> APIs <i /> AI Agents <i /> Workflow Automation <i /> Integrations</p>
-        </div>
+          <p className="hero-positioning">Python Developer <i /> AI Automation <i /> API Integrations <i /> Workflow Automation</p>
+        </motion.div>
 
-        <div className="system-map" aria-label="Diagram of an intelligent automation workflow">
-          <div className="map-header"><span>Automation system</span><span className="status"><i /> Ready</span></div>
-          <div className="map-canvas">
-            <svg className="connectors" viewBox="0 0 560 420" aria-hidden="true">
-              <path d="M106 93 C190 93 180 210 263 210" />
-              <path d="M106 325 C190 325 180 210 263 210" />
-              <path d="M321 210 C390 210 385 93 460 93" />
-              <path d="M321 210 C390 210 385 325 460 325" />
-            </svg>
-            <div className="map-node node-a"><span>01</span><strong>Business data</strong><small>Input</small></div>
-            <div className="map-node node-b"><span>02</span><strong>API event</strong><small>Trigger</small></div>
-            <div className="core-node"><span>AI + PY</span><strong>Process</strong></div>
-            <div className="map-node node-c"><span>03</span><strong>Validation</strong><small>Control</small></div>
-            <div className="map-node node-d"><span>04</span><strong>Action</strong><small>Output</small></div>
+        <motion.div className="system-map system-map-pro" initial={reduceMotion ? false : { opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: .65, delay: .08 }} aria-label="Diagram showing an automation system from trigger to result">
+          <div className="map-header"><span>Workflow / production path</span><span className="status"><i /> System ready</span></div>
+          <div className="system-sequence">
+            {[
+              ['01', 'Trigger', 'Business event'],
+              ['02', 'Logic', 'Python rules'],
+              ['03', 'AI / API', 'Processing'],
+              ['04', 'Action', 'Tool update'],
+              ['05', 'Result', 'Reliable output'],
+            ].map(([number, label, detail], index) => (
+              <motion.div className="sequence-node" key={label} initial={reduceMotion ? false : { opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: .25 + index * .09 }}>
+                <span>{number}</span><div><strong>{label}</strong><small>{detail}</small></div>
+                {index < 4 && <ArrowDownRight aria-hidden="true" />}
+              </motion.div>
+            ))}
           </div>
-          <div className="map-footer"><span>Understand</span><i /><span>Connect</span><i /><span>Automate</span><i /><span>Improve</span></div>
-        </div>
+          <div className="map-footer"><span>Observable</span><i /><span>Testable</span><i /><span>Maintainable</span></div>
+        </motion.div>
       </section>
 
-      <section className="section intro-section reveal">
-        <div className="section-kicker">Approach</div>
+      <motion.section className="section intro-section" id="about" {...reveal}>
+        <p className="section-kicker">Engineering approach</p>
         <div className="intro-grid">
           <h2>I Build Systems,<br />Not Just Scripts.</h2>
           <div className="body-copy">
-            <p>I enjoy taking repetitive or inefficient business processes and turning them into reliable software systems.</p>
-            <p>My work combines Python development, APIs, automation, AI capabilities, web applications, and third-party integrations to create workflows that actually solve operational problems.</p>
-            <p>I care about the full lifecycle of an automation: understanding the problem, designing the workflow, building it, testing edge cases, deploying it, and improving it when real-world conditions change.</p>
+            <p>My work sits at the intersection of <strong>Python, AI, APIs, automation, and business workflows.</strong></p>
+            <p>I start by understanding how work moves today: what triggers it, where information comes from, what decisions are required, and where the process breaks down.</p>
+            <p>Then I design a system that can handle the predictable work reliably — including validation, edge cases, deployment, and the changes that arrive after a workflow meets the real world.</p>
           </div>
         </div>
-        <div className="principle-grid">
-          {[
-            ['01', 'Solve the Real Problem', 'Start with the business problem, not the technology.'],
-            ['02', 'Automate Intelligently', 'Use automation and AI where they genuinely improve the workflow.'],
-            ['03', 'Build for Reliability', 'Test workflows, handle edge cases, and build systems that can actually be used.'],
-          ].map(([number, title, text]) => (
-            <article className="principle" key={number}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>
-          ))}
+        <div className="system-principle">
+          <span>Business problem</span><ArrowRight /><span>Workflow map</span><ArrowRight /><span>Technical system</span><ArrowRight /><span>Practical outcome</span>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="section reveal" id="capabilities">
-        <div className="section-heading"><div><p className="section-kicker">Capabilities</p><h2>What I Build</h2></div><p>Purpose-built automation across the systems where work actually happens.</p></div>
-        <div className="capability-grid">
-          {capabilities.map(({ icon: Icon, title, text }, index) => (
-            <article className="capability-card" key={title}>
-              <div className="card-top"><Icon size={20} /><span>{String(index + 1).padStart(2, '0')}</span></div>
-              <h3>{title}</h3><p>{text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section work-section reveal" id="work">
-        <div className="section-heading"><div><p className="section-kicker">Selected work</p><h2>Practical Systems,<br />Clearly Explained.</h2></div><p>A selection of practical automation and software projects focused on reducing manual work and improving business processes.</p></div>
-        <div className="project-list">
-          {projects.map((project) => (
-            <article className="project-card" key={project.number}>
-              <div className="project-number">{project.number}</div>
-              <div className="project-main"><h3>{project.title}</h3><p>{project.description}</p><div className="tag-list">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
-              <Dialog>
-                <DialogTrigger className="case-trigger">View Case Study <ArrowUpRight size={16} /></DialogTrigger>
-                <DialogContent className="case-dialog">
-                  <DialogHeader>
-                    <span className="dialog-number">Project {project.number}</span>
-                    <DialogTitle className="dialog-title">{project.title}</DialogTitle>
-                    <DialogDescription className="dialog-description">{project.description}</DialogDescription>
-                  </DialogHeader>
-                  <div className="case-steps">
-                    <div><span>01</span><h4>Problem</h4><p>{project.problem}</p></div>
-                    <div><span>02</span><h4>Approach</h4><p>{project.approach}</p></div>
-                    <div><span>03</span><h4>Automation</h4><p>{project.automation}</p></div>
-                    <div><span>04</span><h4>Result</h4><p>Designed to reduce repetitive manual work and improve workflow consistency.</p></div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section experience-section reveal" aria-labelledby="experience-heading">
+      <motion.section className="section automate-section" {...reveal}>
         <div className="section-heading">
-          <div>
-            <p className="section-kicker">Client work</p>
-            <h2 id="experience-heading">Professional<br />Experience</h2>
-          </div>
+          <div><p className="section-kicker">Automation scope</p><h2>What I Automate</h2></div>
+          <p>Focused systems for repetitive work, fragmented tools, and information that needs to move reliably.</p>
+        </div>
+        <div className="automation-grid">
+          {automationAreas.map(({ icon: Icon, title, text, flow }, index) => (
+            <motion.article className="automation-card" key={title} whileHover={reduceMotion ? {} : { y: -4 }} transition={{ duration: .2 }}>
+              <div className="card-top"><Icon size={19} /><span>{String(index + 1).padStart(2, '0')}</span></div>
+              <h3>{title}</h3><p>{text}</p><Flow steps={flow} />
+            </motion.article>
+          ))}
+        </div>
+      </motion.section>
+
+      <motion.section className="section work-section" id="work" {...reveal}>
+        <div className="section-heading">
+          <div><p className="section-kicker">Case studies</p><h2>Selected<br />Automation Work</h2></div>
+          <p>Technical work framed around the process problem, the system design, and the qualitative outcome.</p>
+        </div>
+        <div className="case-study-list">
+          {projects.map((project) => (
+            <article className="engineering-case" key={project.number}>
+              <header><span>{project.number} / 04</span><h3>{project.title}</h3></header>
+              <div className="case-analysis">
+                <div><h4>Problem</h4><p>{project.problem}</p></div>
+                <div><h4>Solution</h4><p>{project.solution}</p></div>
+                <div><h4>Technical approach</h4><p>{project.technical}</p></div>
+              </div>
+              <div className="case-workflow"><span>Workflow</span><Flow steps={project.workflow} /></div>
+              <div className="case-result">
+                <div><span>Result</span><p>{project.result}</p></div>
+                <Dialog>
+                  <DialogTrigger className="case-trigger">Technical summary <ArrowUpRight size={16} /></DialogTrigger>
+                  <DialogContent className="case-dialog">
+                    <DialogHeader>
+                      <span className="dialog-number">Automation case {project.number}</span>
+                      <DialogTitle className="dialog-title">{project.title}</DialogTitle>
+                      <DialogDescription className="dialog-description">{project.solution}</DialogDescription>
+                    </DialogHeader>
+                    <div className="case-steps">
+                      <div><span>01</span><h4>Problem</h4><p>{project.problem}</p></div>
+                      <div><span>02</span><h4>Solution</h4><p>{project.solution}</p></div>
+                      <div><span>03</span><h4>Technical approach</h4><p>{project.technical}</p></div>
+                      <div><span>04</span><h4>Result</h4><p>{project.result}</p></div>
+                    </div>
+                    <div className="tag-list">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </article>
+          ))}
+        </div>
+      </motion.section>
+
+      <motion.section className="section experience-section" id="experience" {...reveal}>
+        <div className="section-heading">
+          <div><p className="section-kicker">Client work</p><h2>Professional<br />Experience</h2></div>
           <p>Selected companies and teams I&apos;ve worked with across automation, software, and technical projects.</p>
         </div>
         <div className="experience-list">
           {experience.map((company, index) => (
             <article className="experience-item" key={company}>
               <span className="experience-number">{String(index + 1).padStart(2, '0')}</span>
-              <div>
-                <h3>{company}</h3>
-                <p>Role and project details to be added.</p>
-              </div>
+              <div><h3>{company}</h3><p>Role and project details to be added.</p></div>
               <span className="experience-status">Professional work</span>
             </article>
           ))}
         </div>
         <p className="experience-note">Specific roles, dates, and project details will be included when available.</p>
-      </section>
+      </motion.section>
 
-      <section className="section stack-section reveal">
-        <div className="section-heading"><div><p className="section-kicker">Technical stack</p><h2>Tools I Work With</h2></div><p>A focused toolkit for building integrations, backend logic, intelligent workflows, and usable applications.</p></div>
-        <div className="stack-grid">
-          {stack.map(([category, items]) => (
-            <article className="stack-group" key={category as string}><h3>{category}</h3><div>{(items as string[]).map((item) => <span key={item}>{item}</span>)}</div></article>
-          ))}
-        </div>
-      </section>
-
-      <section className="process-section reveal" id="process">
-        <div className="section process-inner">
-          <div className="process-intro"><p className="section-kicker">How I work</p><h2>From Repetitive Task to Reliable System.</h2><p>I don&apos;t just write code. I build and maintain working systems.</p></div>
+      <section className="process-section" id="process">
+        <motion.div className="section process-inner" {...reveal}>
+          <div className="process-intro"><p className="section-kicker">How I build automation</p><h2>From Manual Process to Production System.</h2><p>Each stage moves the workflow closer to something observable, reliable, and ready for real use.</p></div>
           <div className="timeline">
             {process.map(([title, text], index) => (
-              <article className="timeline-step" key={title}><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{title}</h3><p>{text}</p></div></article>
+              <article className="timeline-step" key={title}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <div><h3>{title}</h3><p>{text}</p></div>
+                <div className="timeline-rail" aria-hidden="true" />
+              </article>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
-      <section className="section automation-section reveal">
-        <p className="section-kicker">Why automation</p>
-        <h2>Busywork Is Expensive.<br />Good Automation Gives Time Back.</h2>
-        <div className="impact-grid">
-          <article><span>01</span><GitBranch /><h3>Repetitive</h3><p>Stop spending valuable hours performing the same task again and again.</p></article>
-          <article><span>02</span><PlugZap /><h3>Connected</h3><p>Make disconnected tools work together through APIs and automation.</p></article>
-          <article><span>03</span><DatabaseZap /><h3>Scalable</h3><p>Build workflows that can handle more work without simply adding more manual effort.</p></article>
+      <motion.section className="section stack-section" id="stack" {...reveal}>
+        <div className="section-heading">
+          <div><p className="section-kicker">Technical stack</p><h2>Tools for Building<br />Working Systems</h2></div>
+          <p>A focused stack for automation logic, integration work, AI processing, testing, and delivery.</p>
         </div>
-      </section>
+        <div className="stack-grid">
+          {stack.map(([category, items], index) => (
+            <article className="stack-group" key={category as string}>
+              <span className="stack-number">{String(index + 1).padStart(2, '0')}</span>
+              <h3>{category}</h3>
+              <div>{(items as string[]).map((item) => <span key={item}>{item}</span>)}</div>
+            </article>
+          ))}
+        </div>
+      </motion.section>
 
-      <section className="section about-section reveal" id="about">
+      <motion.section className="why-section" {...reveal}>
+        <div className="section why-inner">
+          <div>
+            <p className="section-kicker">Why automation?</p>
+            <h2>Automation Isn&apos;t About Doing More. It&apos;s About Removing What Shouldn&apos;t Be Manual.</h2>
+          </div>
+          <div className="why-content">
+            <p>Repetitive work creates wasted time, inconsistent processes, avoidable human errors, fragmented systems, and slow response times.</p>
+            <ul>{['Wasted time', 'Inconsistent processes', 'Avoidable errors', 'Fragmented systems', 'Slow responses'].map((item) => <li key={item}><span />{item}</li>)}</ul>
+            <blockquote>Build systems that handle predictable work automatically, while people focus on decisions that actually require them.</blockquote>
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section className="section about-detail" {...reveal}>
         <div className="about-mark" aria-hidden="true">MU</div>
-        <div className="about-copy"><p className="section-kicker">About me</p><h2>A Developer Focused on Practical Automation</h2>
-          <p>I&apos;m Muhammad Umer, a developer focused on Python, automation, APIs, AI-powered workflows, and practical software solutions.</p>
-          <p>My approach is straightforward: understand how a process works, identify where time and effort are being wasted, then build a reliable system that removes unnecessary manual work.</p>
-          <p>I enjoy working independently, learning unfamiliar systems quickly, and turning ambiguous problems into working technical solutions.</p>
+        <div className="about-copy"><p className="section-kicker">About Muhammad Umer</p><h2>Practical Engineering for Business Workflows</h2>
+          <p>I work where Python, AI, APIs, automation, and business operations meet.</p>
+          <p>My focus is understanding how a process works, finding the points where manual effort or disconnected tools create friction, and building a system that removes that friction without hiding complexity behind a demo.</p>
+          <p>I work independently, learn unfamiliar systems quickly, and carry automation from workflow mapping through testing, deployment, troubleshooting, and improvement.</p>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="section strengths-section reveal">
-        {[
-          ['Python & Automation', 'Build practical automation logic and backend workflows.'],
-          ['APIs & Integrations', 'Connect systems and move information reliably between tools.'],
-          ['AI & Intelligent Workflows', 'Use AI where it provides a practical advantage inside real workflows.'],
-          ['Independent Problem Solving', 'Research unfamiliar systems, troubleshoot issues, and move from problem to working solution independently.'],
-        ].map(([title, text], index) => <article key={title}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p></article>)}
-      </section>
+      <motion.section className="section real-work-section" {...reveal}>
+        <div className="real-work-heading"><p className="section-kicker">Built for real work</p><h2>Good Automation Holds Up After the Demo.</h2></div>
+        <div className="real-work-grid">
+          <article><Wrench /><span>01</span><h3>Practical</h3><p>Build for actual workflows and business problems.</p></article>
+          <article><ShieldCheck /><span>02</span><h3>Reliable</h3><p>Test systems before they become part of a production process.</p></article>
+          <article><CheckCircle2 /><span>03</span><h3>Maintainable</h3><p>Create automation that can be understood, monitored, and improved.</p></article>
+        </div>
+      </motion.section>
 
       <section className="contact-section" id="contact">
-        <div className="section contact-inner reveal">
-          <div className="contact-copy"><p className="section-kicker">Contact</p><h2>Have a Repetitive Process Worth Automating?</h2><p>Let&apos;s turn manual work into a reliable system.</p>
+        <motion.div className="section contact-inner" {...reveal}>
+          <div className="contact-copy"><p className="section-kicker">Start a conversation</p><h2>Have a Repetitive Workflow Worth Automating?</h2><p>Tell me what your current process looks like. I&apos;ll help identify where automation can remove the manual work.</p>
             <div className="contact-links" aria-label="Contact links">
               {['Email', 'GitHub', 'LinkedIn'].map((label) => <span key={label}><strong>{label}</strong><small>Link to be added</small></span>)}
             </div>
           </div>
           <form className="contact-form" onSubmit={submitForm}>
             <div className="form-row"><label>Name<input name="name" type="text" autoComplete="name" required placeholder="Your name" /></label><label>Email<input name="email" type="email" autoComplete="email" required placeholder="you@example.com" /></label></div>
-            <label>Message<textarea name="message" required rows={5} placeholder="Tell me about the process you want to improve." /></label>
-            <button className="button button-primary submit-button" type="submit">Send Message <Send size={16} /></button>
+            <label>Workflow<textarea name="message" required rows={5} placeholder="What happens today, and where does the manual work slow things down?" /></label>
+            <button className="button button-primary submit-button" type="submit">Start a Conversation <Send size={16} /></button>
             {formNote && <p className="form-note" role="status">{formNote}</p>}
           </form>
-        </div>
+        </motion.div>
       </section>
 
       <footer className="site-footer">
