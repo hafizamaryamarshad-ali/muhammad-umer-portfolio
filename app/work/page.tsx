@@ -5,8 +5,7 @@ export const metadata: Metadata = { title: 'Selected Automation Work | Muhammad 
 
 export default function WorkPage() {
   return <SiteShell activePath="/work">
-    <PageHeader code="CASE FILES / 03" kicker="Selected automation work" title="Automation, documented in context." intro="Each case file follows the same engineering lens: problem, approach, system flow, technology, and intended outcome—without invented claims or metrics." />
-    <Reveal className="section work-register"><span>INDEX / 04 SYSTEMS</span><p>Verified portfolio work</p><div>{['Data movement', 'Document processing', 'System integration', 'Web automation'].map((item, index) => <span key={item}>0{index + 1} — {item}</span>)}</div></Reveal>
+    <PageHeader kicker="Selected automation work" title="Automation, documented in context." intro="Each case file follows the same engineering lens: problem, approach, system flow, technology, and intended outcome—without invented claims or metrics." />
     <Reveal className="section work-cases"><CaseStudyList /></Reveal>
   </SiteShell>;
 }
