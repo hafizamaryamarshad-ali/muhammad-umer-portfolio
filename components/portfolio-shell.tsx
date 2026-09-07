@@ -21,34 +21,450 @@ export const processSteps = [
   ['Improve', 'Watch how it performs and update it when the work changes.'],
 ] as const;
 
-export const experiences = [
-  { mark: 'SW', company: 'Southwest Urgent Care & Family Practice', role: 'Automation Engineer', employment: '', duration: 'Jun 2024 – Present', location: 'Houston, Texas, United States · Remote', description: 'Automated clinical workflows to reduce manual work and automated EMR data entry operations.', url: 'https://www.linkedin.com/company/9458234/' },
-  { mark: 'ET', company: 'Endpointech', role: 'Automation Engineer', employment: 'Part-time', duration: 'Aug 2023 – Jan 2026', location: '', description: 'Built job application bots for different job platforms.', url: 'https://www.linkedin.com/company/82534194/' },
-  { mark: 'fi', company: 'Fiverr', role: 'Automation Engineer', employment: 'Freelance', duration: 'Dec 2022 – Jan 2025', location: 'Remote', description: 'Automated business workflows and repetitive data entry tasks.', url: '' },
-  { mark: 'TS', company: 'Tech Sol', role: 'Python Intern', employment: 'Internship', duration: 'Sep 2021 – Dec 2022', location: '', description: 'Worked with Python to build practical software and automation solutions.', url: '' },
-  { mark: 'BL', company: 'Blue Level Consulting Ltd', role: '', employment: '', duration: '', location: '', description: '', url: '' },
-  { mark: 'DH', company: 'Dream Home Estates', role: '', employment: '', duration: '', location: '', description: '', url: '' },
-] as const;
+type Experience = {
+  mark: string;
+  company: string;
+  role: string;
+  employment: string;
+  duration: string;
+  location: string;
+  description: string;
+  url: string;
+};
 
-export function Flow({ steps, animated = false }: { steps: readonly string[]; animated?: boolean }) { return <div className={`flow-line ${animated ? 'flow-animated' : ''}`} aria-label={steps.join(' to ')}>{steps.map((step, index) => <span className="flow-step" key={step}><b><i />{step}</b>{index < steps.length - 1 && <ArrowRight aria-hidden="true" />}</span>)}</div>; }
+export const experiences: Experience[] = [
+  {
+    mark: 'SW',
+    company: 'Southwest Urgent Care & Family Practice',
+    role: 'Automation Engineer',
+    employment: '',
+    duration: 'Jun 2024 – Present',
+    location: 'Houston, Texas, United States · Remote',
+    description: 'Automated clinical workflows to reduce manual work and automated EMR data entry operations.',
+    url: 'https://www.linkedin.com/company/9458234/',
+  },
+  {
+    mark: 'ET',
+    company: 'Endpointech',
+    role: 'Automation Engineer',
+    employment: 'Part-time',
+    duration: 'Aug 2023 – Jan 2026',
+    location: '',
+    description: 'Built job application bots for different job platforms.',
+    url: 'https://www.linkedin.com/company/82534194/',
+  },
+  {
+    mark: 'BL',
+    company: 'Blue Level Consulting Ltd',
+    role: '',
+    employment: '',
+    duration: '2023 – Present',
+    location: '',
+    description: '',
+    url: '',
+  },
+  {
+    mark: 'fi',
+    company: 'Fiverr',
+    role: 'Automation Engineer',
+    employment: 'Freelance',
+    duration: 'Dec 2022 – Jan 2025',
+    location: 'Remote',
+    description: 'Automated business workflows and repetitive data entry tasks.',
+    url: '',
+  },
+  {
+    mark: 'TS',
+    company: 'Tech Sol',
+    role: 'Python Intern',
+    employment: 'Internship',
+    duration: 'Sep 2021 – Dec 2022',
+    location: '',
+    description: 'Worked with Python to build practical software and automation solutions.',
+    url: '',
+  },
+  {
+    mark: 'DH',
+    company: 'Dream Home Estates',
+    role: '',
+    employment: '',
+    duration: '2025 – Present',
+    location: '',
+    description: '',
+    url: '',
+  },
+];
 
-export function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) { const reduceMotion = useReducedMotion(); return <motion.div className={className} initial={false} whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }} viewport={{ once: true, amount: .1 }} transition={{ duration: .48, delay, ease: [0.22, 1, 0.36, 1] }}>{children}</motion.div>; }
-
-export function SiteShell({ activePath, children }: { activePath: string; children: ReactNode }) {
-  const [dark, setDark] = useState(false); const [themeReady, setThemeReady] = useState(false); const [menuOpen, setMenuOpen] = useState(false); const [scrolled, setScrolled] = useState(false);
-  useEffect(() => { setDark(localStorage.getItem('theme') === 'dark'); setThemeReady(true); const onScroll = () => setScrolled(window.scrollY > 18); onScroll(); window.addEventListener('scroll', onScroll, { passive: true }); return () => window.removeEventListener('scroll', onScroll); }, []);
-  useEffect(() => { if (!themeReady) return; document.documentElement.classList.toggle('dark', dark); localStorage.setItem('theme', dark ? 'dark' : 'light'); }, [dark, themeReady]);
-  return <main className={`page page-${activePath === '/' ? 'home' : activePath.slice(1)}`}><nav className={`site-nav ${scrolled ? 'nav-scrolled' : ''}`} aria-label="Primary navigation"><a className="wordmark" href="/" onClick={() => setMenuOpen(false)}><span>MU</span><span className="wordmark-copy"><strong>Muhammad Umer</strong><small>AI Automation Engineer</small></span></a><div className="nav-links">{navItems.map(([label, href]) => <a className={activePath === href ? 'active' : ''} aria-current={activePath === href ? 'page' : undefined} href={href} key={href}>{label}</a>)}<a className="nav-cta" href="/contact">Let&apos;s Talk <ArrowUpRight size={14} /></a><button className="theme-toggle" type="button" onClick={() => setDark(v => !v)} aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}>{dark ? <Sun size={16} /> : <Moon size={16} />}</button><button className="menu-toggle" type="button" onClick={() => setMenuOpen(v => !v)} aria-expanded={menuOpen} aria-controls="mobile-menu" aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}>{menuOpen ? <X size={19} /> : <Menu size={19} />}</button></div><div className={`mobile-menu ${menuOpen ? 'open' : ''}`} id="mobile-menu">{navItems.map(([label, href]) => <a className={activePath === href ? 'active' : ''} aria-current={activePath === href ? 'page' : undefined} href={href} key={href} onClick={() => setMenuOpen(false)}><span>{label}</span><ArrowUpRight size={16} /></a>)}</div></nav>{children}<footer className="site-footer"><div className="footer-lead"><span className="footer-mark">MU</span><div><strong>Muhammad Umer</strong><small>AI Automation Engineer</small></div></div><nav aria-label="Footer navigation">{navItems.map(([label, href]) => <a href={href} key={href}>{label}</a>)}</nav><div className="footer-meta"><div className="footer-ctas"><a href="https://www.linkedin.com/in/itsmuhammadumer/" target="_blank" rel="noreferrer" aria-label="Connect with Muhammad Umer on LinkedIn"><ArrowUpRight size={14} /> LinkedIn</a><a href="https://wa.me/923000335194" target="_blank" rel="noreferrer" aria-label="Message Muhammad Umer on WhatsApp"><MessageCircle size={14} /> WhatsApp</a></div><span>Python · AI · APIs · Automation</span><small>© 2026 Muhammad Umer</small></div></footer></main>;
+export function Flow({ steps, animated = false }: { steps: readonly string[]; animated?: boolean }) {
+  return (
+    <div className={`flow-line ${animated ? 'flow-animated' : ''}`} aria-label={steps.join(' to ')}>
+      {steps.map((step, index) => (
+        <span className="flow-step" key={step}>
+          <b><i />{step}</b>
+          {index < steps.length - 1 && <ArrowRight aria-hidden="true" />}
+        </span>
+      ))}
+    </div>
+  );
 }
 
-export function PageHeader({ kicker, title, intro }: { kicker: string; title: string; intro: string }) { return <header className="page-header"><motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .48 }}><p className="section-kicker">{kicker}</p><h1>{title}</h1><p className="page-intro">{intro}</p></motion.div></header>; }
+export function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const reduceMotion = useReducedMotion();
 
-export function ProfilePanel({ compact = false, editorial = false }: { compact?: boolean; editorial?: boolean }) { return <div className={`profile-panel ${compact ? 'compact' : ''} ${editorial ? 'editorial' : ''}`}><div className="profile-grid" aria-hidden="true" /><img src="/images/muhammad-umer-profile.png" alt="Muhammad Umer, AI Automation Engineer" /></div>; }
+  return (
+    <motion.div
+      className={className}
+      initial={false}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: .1 }}
+      transition={{ duration: .48, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
-export function CaseStudyList({ limit }: { limit?: number }) { const items = limit ? projects.slice(0, limit) : projects; return <div className="case-study-list">{items.map(project => <motion.article className="engineering-case" key={project.number} whileHover={{ y: -3 }} transition={{ duration: .2 }}><header><h3>{project.title}</h3><span className="case-status"><i /> Documented</span></header><div className="case-core"><div className="case-problem"><h4>Problem</h4><p>{project.problem}</p></div><div className="case-approach"><h4>Approach</h4><p>{project.approach}</p></div></div><div className="case-workflow"><span>Automation flow</span><Flow steps={project.workflow} animated /></div><div className="case-lower"><div><h4>Technology</h4><p>{project.technology}</p></div><div><h4>Outcome</h4><p>{project.outcome}</p></div></div><footer><div className="tag-list">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div></footer></motion.article>)}</div>; }
+export function SiteShell({ activePath, children }: { activePath: string; children: ReactNode }) {
+  const [dark, setDark] = useState(false);
+  const [themeReady, setThemeReady] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-export function ProcessTimeline({ compact = false }: { compact?: boolean }) { const items = compact ? processSteps.slice(0, 3) : processSteps; return <div className={`timeline ${compact ? 'compact' : ''}`}>{items.map(([title, text], index) => <article className="timeline-step" key={title}><div className="timeline-number">{String(index + 1).padStart(2, '0')}<i /></div><div><h3>{title}</h3><p>{text}</p></div><Check size={16} aria-hidden="true" /></article>)}</div>; }
+  useEffect(() => {
+    setDark(localStorage.getItem('theme') === 'dark');
+    setThemeReady(true);
 
-export function ExperienceList() { return <div className="experience-list">{experiences.map((item, index) => <article className="experience-item" key={item.company}><span>{String(index + 1).padStart(2, '0')}</span><div className="experience-body"><header><span className={`experience-mark ${item.company === 'Fiverr' ? 'fiverr-mark' : ''}`} aria-hidden="true">{item.mark}</span><div><h3>{item.company}</h3>{item.role && <strong>{item.role}{item.employment && ` · ${item.employment}`}</strong>}</div></header>{(item.duration || item.location) && <div className="experience-meta">{item.duration && <span>{item.duration}</span>}{item.location && <span>{item.location}</span>}</div>}{item.description && <p>{item.description}</p>}</div>{item.url && <a className="experience-link" href={item.url} target="_blank" rel="noreferrer" aria-label={`Visit ${item.company} on LinkedIn`}>Company page <ArrowUpRight size={16} /></a>}</article>)}</div>; }
+    const onScroll = () => setScrolled(window.scrollY > 18);
+    onScroll();
 
-export function ContactPanel() { const [formNote, setFormNote] = useState(''); const submitForm = (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); setFormNote('This form is ready for a contact service to be connected. No message has been sent.'); }; return <div className="contact-panel"><div className="contact-copy"><div className="contact-flow"><span>What happens next</span><Flow steps={['Your task', 'A clear plan', 'Next step']} /></div></div><form className="contact-form" onSubmit={submitForm}><div className="form-row"><label>Name<input name="name" type="text" autoComplete="name" required placeholder="Your name" /></label><label>Email<input name="email" type="email" autoComplete="email" required placeholder="you@example.com" /></label></div><label>Task<textarea name="message" required rows={6} placeholder="What task takes too much time today?" /></label><button className="button button-primary" type="submit">Start a Conversation <Send size={16} /></button>{formNote && <p className="form-note" role="status">{formNote}</p>}</form></div>; }
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!themeReady) return;
+
+    document.documentElement.classList.toggle('dark', dark);
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  }, [dark, themeReady]);
+
+  return (
+    <main className={`page page-${activePath === '/' ? 'home' : activePath.slice(1)}`}>
+      <nav className={`site-nav ${scrolled ? 'nav-scrolled' : ''}`} aria-label="Primary navigation">
+        <a className="wordmark" href="/" onClick={() => setMenuOpen(false)}>
+          <span>MU</span>
+          <span className="wordmark-copy">
+            <strong>Muhammad Umer</strong>
+            <small>AI Automation Engineer</small>
+          </span>
+        </a>
+
+        <div className="nav-links">
+          {navItems.map(([label, href]) => (
+            <a
+              className={activePath === href ? 'active' : ''}
+              aria-current={activePath === href ? 'page' : undefined}
+              href={href}
+              key={href}
+            >
+              {label}
+            </a>
+          ))}
+
+          <a className="nav-cta" href="/contact">
+            Let&apos;s Talk <ArrowUpRight size={14} />
+          </a>
+
+          <button
+            className="theme-toggle"
+            type="button"
+            onClick={() => setDark(v => !v)}
+            aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {dark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+
+          <button
+            className="menu-toggle"
+            type="button"
+            onClick={() => setMenuOpen(v => !v)}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          >
+            {menuOpen ? <X size={19} /> : <Menu size={19} />}
+          </button>
+        </div>
+
+        <div className={`mobile-menu ${menuOpen ? 'open' : ''}`} id="mobile-menu">
+          {navItems.map(([label, href]) => (
+            <a
+              className={activePath === href ? 'active' : ''}
+              aria-current={activePath === href ? 'page' : undefined}
+              href={href}
+              key={href}
+              onClick={() => setMenuOpen(false)}
+            >
+              <span>{label}</span>
+              <ArrowUpRight size={16} />
+            </a>
+          ))}
+        </div>
+      </nav>
+
+      {children}
+
+      <footer className="site-footer">
+        <div className="footer-lead">
+          <span className="footer-mark">MU</span>
+          <div>
+            <strong>Muhammad Umer</strong>
+            <small>AI Automation Engineer</small>
+          </div>
+        </div>
+
+        <nav aria-label="Footer navigation">
+          {navItems.map(([label, href]) => (
+            <a href={href} key={href}>{label}</a>
+          ))}
+        </nav>
+
+        <div className="footer-meta">
+          <div className="footer-ctas">
+            <a
+              href="https://www.linkedin.com/in/itsmuhammadumer/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Connect with Muhammad Umer on LinkedIn"
+            >
+              <ArrowUpRight size={14} /> LinkedIn
+            </a>
+
+            <a
+              href="https://wa.me/923000335194"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Message Muhammad Umer on WhatsApp"
+            >
+              <MessageCircle size={14} /> WhatsApp
+            </a>
+          </div>
+
+          <span>Python · AI · APIs · Automation</span>
+          <small>© 2026 Muhammad Umer</small>
+        </div>
+      </footer>
+    </main>
+  );
+}
+
+export function PageHeader({ kicker, title, intro }: { kicker: string; title: string; intro: string }) {
+  return (
+    <header className="page-header">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: .48 }}
+      >
+        <p className="section-kicker">{kicker}</p>
+        <h1>{title}</h1>
+        <p className="page-intro">{intro}</p>
+      </motion.div>
+    </header>
+  );
+}
+
+export function ProfilePanel({ compact = false, editorial = false }: { compact?: boolean; editorial?: boolean }) {
+  return (
+    <div className={`profile-panel ${compact ? 'compact' : ''} ${editorial ? 'editorial' : ''}`}>
+      <div className="profile-grid" aria-hidden="true" />
+      <img src="/images/muhammad-umer-profile.png" alt="Muhammad Umer, AI Automation Engineer" />
+    </div>
+  );
+}
+
+export function CaseStudyList({ limit }: { limit?: number }) {
+  const items = limit ? projects.slice(0, limit) : projects;
+
+  return (
+    <div className="case-study-list">
+      {items.map(project => (
+        <motion.article
+          className="engineering-case"
+          key={project.number}
+          whileHover={{ y: -3 }}
+          transition={{ duration: .2 }}
+        >
+          <header>
+            <h3>{project.title}</h3>
+            <span className="case-status"><i /> Documented</span>
+          </header>
+
+          <div className="case-core">
+            <div className="case-problem">
+              <h4>Problem</h4>
+              <p>{project.problem}</p>
+            </div>
+
+            <div className="case-approach">
+              <h4>Approach</h4>
+              <p>{project.approach}</p>
+            </div>
+          </div>
+
+          <div className="case-workflow">
+            <span>Automation flow</span>
+            <Flow steps={project.workflow} animated />
+          </div>
+
+          <div className="case-lower">
+            <div>
+              <h4>Technology</h4>
+              <p>{project.technology}</p>
+            </div>
+
+            <div>
+              <h4>Outcome</h4>
+              <p>{project.outcome}</p>
+            </div>
+          </div>
+
+          <footer>
+            <div className="tag-list">
+              {project.tags.map(tag => <span key={tag}>{tag}</span>)}
+            </div>
+          </footer>
+        </motion.article>
+      ))}
+    </div>
+  );
+}
+
+export function ProcessTimeline({ compact = false }: { compact?: boolean }) {
+  const items = compact ? processSteps.slice(0, 3) : processSteps;
+
+  return (
+    <div className={`timeline ${compact ? 'compact' : ''}`}>
+      {items.map(([title, text], index) => (
+        <article className="timeline-step" key={title}>
+          <div className="timeline-number">
+            {String(index + 1).padStart(2, '0')}<i />
+          </div>
+
+          <div>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </div>
+
+          <Check size={16} aria-hidden="true" />
+        </article>
+      ))}
+    </div>
+  );
+}
+
+export function ExperienceList() {
+  return (
+    <div className="experience-list">
+      {experiences.map((item, index) => (
+        <article className="experience-item" key={item.company}>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+
+          <div className="experience-body">
+            <header>
+              <span
+                className={`experience-mark ${item.company === 'Fiverr' ? 'fiverr-mark' : ''}`}
+                aria-hidden="true"
+              >
+                {item.mark}
+              </span>
+
+              <div>
+                <h3>{item.company}</h3>
+
+                {item.role && (
+                  <strong>
+                    {item.role}
+                    {item.employment && ` · ${item.employment}`}
+                  </strong>
+                )}
+              </div>
+            </header>
+
+            {(item.duration || item.location) && (
+              <div className="experience-meta">
+                {item.duration && <span>{item.duration}</span>}
+                {item.location && <span>{item.location}</span>}
+              </div>
+            )}
+
+            {item.description && <p>{item.description}</p>}
+          </div>
+
+          {item.url && (
+            <a
+              className="experience-link"
+              href={item.url}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Visit ${item.company} on LinkedIn`}
+            >
+              Company page <ArrowUpRight size={16} />
+            </a>
+          )}
+        </article>
+      ))}
+    </div>
+  );
+}
+
+export function ContactPanel() {
+  const [formNote, setFormNote] = useState('');
+
+  const submitForm = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setFormNote('This form is ready for a contact service to be connected. No message has been sent.');
+  };
+
+  return (
+    <div className="contact-panel">
+      <div className="contact-copy">
+        <div className="contact-flow">
+          <span>What happens next</span>
+          <Flow steps={['Your task', 'A clear plan', 'Next step']} />
+        </div>
+      </div>
+
+      <form className="contact-form" onSubmit={submitForm}>
+        <div className="form-row">
+          <label>
+            Name
+            <input name="name" type="text" autoComplete="name" required placeholder="Your name" />
+          </label>
+
+          <label>
+            Email
+            <input name="email" type="email" autoComplete="email" required placeholder="you@example.com" />
+          </label>
+        </div>
+
+        <label>
+          Task
+          <textarea
+            name="message"
+            required
+            rows={6}
+            placeholder="What task takes too much time today?"
+          />
+        </label>
+
+        <button className="button button-primary" type="submit">
+          Start a Conversation <Send size={16} />
+        </button>
+
+        {formNote && <p className="form-note" role="status">{formNote}</p>}
+      </form>
+    </div>
+  );
+}
