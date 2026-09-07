@@ -378,10 +378,9 @@ export function ExperienceList() {
     <div className="experience-list">
       {experiences.map((item, index) => (
         <article className="experience-item" key={item.company}>
-          <span>{String(index + 1).padStart(2, '0')}</span>
-
-          <div className="experience-body">
-            <header>
+          <header className="experience-card-header">
+            <span className="experience-number">{String(index + 1).padStart(2, '0')}</span>
+            <div className="experience-heading">
               <span
                 className={`experience-mark ${item.company === 'Fiverr' ? 'fiverr-mark' : ''}`}
                 aria-hidden="true"
@@ -399,29 +398,26 @@ export function ExperienceList() {
                   </strong>
                 )}
               </div>
-            </header>
+            </div>
 
-            {(item.duration || item.location) && (
-              <div className="experience-meta">
-                {item.duration && <span>{item.duration}</span>}
-                {item.location && <span>{item.location}</span>}
-              </div>
+            {item.url && (
+              <a
+                className="experience-link"
+                href={item.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Visit ${item.company} on LinkedIn`}
+              >
+                Company page <ArrowUpRight size={16} />
+              </a>
             )}
+          </header>
 
-            {item.description && <p>{item.description}</p>}
+          <div className="experience-card-details">
+            {item.duration && <div><span>Timeline</span><p>{item.duration}</p></div>}
+            {item.location && <div><span>Location</span><p>{item.location}</p></div>}
+            {item.description && <div className="experience-summary"><span>Work</span><p>{item.description}</p></div>}
           </div>
-
-          {item.url && (
-            <a
-              className="experience-link"
-              href={item.url}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`Visit ${item.company} on LinkedIn`}
-            >
-              Company page <ArrowUpRight size={16} />
-            </a>
-          )}
         </article>
       ))}
     </div>
