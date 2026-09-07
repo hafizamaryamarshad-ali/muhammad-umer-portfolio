@@ -570,3 +570,8 @@ html.dark{color-scheme:dark}
   .page-experience .timeline-step:hover{padding-left:4px}
   .projects-layout{padding-top:52px}
 }
+
+/* Keep the home introduction comfortably separated from the fixed navigation. */
+.page-home .hp-hero{padding-top:140px}
+@media(max-width:1080px){.page-home .hp-hero{padding-top:126px}}
+@media(max-width:700px){.page-home .hp-hero{padding-top:112px}}
