@@ -241,10 +241,10 @@ export function SiteShell({ activePath, children }: { activePath: string; childr
             </a>
 
             <a
-              href="https://github.com/hafizamaryamarshad-ali/muhammad-umer-portfolio"
+              href="https://github.com/am-muhammadumer"
               target="_blank"
               rel="noreferrer"
-              aria-label="View Muhammad Umer's portfolio on GitHub"
+              aria-label="View Muhammad Umer's GitHub profile"
             >
               <Code2 size={14} /> GitHub
             </a>
@@ -416,9 +416,9 @@ export function ContactPanel() {
             <MessageCircle size={18} aria-hidden="true" />
             <span><strong>WhatsApp</strong><small>Start a conversation</small></span>
           </a>
-          <a href="https://github.com/hafizamaryamarshad-ali/muhammad-umer-portfolio" target="_blank" rel="noreferrer">
+          <a href="https://github.com/am-muhammadumer" target="_blank" rel="noreferrer">
             <Code2 size={18} aria-hidden="true" />
-            <span><strong>GitHub</strong><small>View portfolio source</small></span>
+            <span><strong>GitHub</strong><small>View GitHub profile</small></span>
           </a>
         </div>
 

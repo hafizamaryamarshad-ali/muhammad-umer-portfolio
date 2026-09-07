@@ -20,7 +20,7 @@ export default function ExperiencePage() {
         <ExperienceList />
         <a
           className="experience-github"
-          href="https://github.com/hafizamaryamarshad-ali/muhammad-umer-portfolio"
+          href="https://github.com/am-muhammadumer"
           target="_blank"
           rel="noreferrer"
         >
