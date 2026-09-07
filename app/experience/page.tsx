@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { ExperienceList, PageHeader, ProcessTimeline, Reveal, SiteShell } from '@/components/portfolio-shell';
+import { Code2 } from 'lucide-react';
+import { ExperienceList, ProcessTimeline, Reveal, SiteShell } from '@/components/portfolio-shell';
 
 export const metadata: Metadata = {
   title: 'Experience | Muhammad Umer',
@@ -8,10 +9,18 @@ export const metadata: Metadata = {
 
 export default function ExperiencePage() {
   return <SiteShell activePath="/experience">
-    <PageHeader kicker="Professional background" title="Work focused on practical automation." intro="I have built automation for healthcare, job applications, and everyday business tasks." />
     <Reveal className="section experience-section">
       <div className="section-heading"><div><p className="section-kicker">Companies and roles</p><h2>Where I have worked.</h2></div></div>
       <ExperienceList />
+      <a
+        className="experience-github"
+        href="https://github.com/hafizamaryamarshad-ali/muhammad-umer-portfolio"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <Code2 size={17} aria-hidden="true" />
+        View GitHub
+      </a>
     </Reveal>
     <Reveal className="section process-layout experience-approach">
       <aside><p className="section-kicker">Engineering approach</p><h2>A clear way to build.</h2><p>I first understand the task, the tools involved, and where the work slows down.</p><p>Then I build the simplest reliable solution for that process.</p><div className="blueprint-key"><span><i /> Input</span><span><i /> Work</span><span><i /> Result</span></div></aside>

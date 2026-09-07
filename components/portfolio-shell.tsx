@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, ArrowUpRight, Check, Menu, MessageCircle, Moon, Send, Sun, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, Code2, Menu, MessageCircle, Moon, Send, Sun, X } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { FormEvent, ReactNode, useEffect, useState } from 'react';
 
@@ -33,6 +33,16 @@ type Experience = {
 };
 
 export const experiences: Experience[] = [
+  {
+    mark: 'DH',
+    company: 'Dream Home Estates',
+    role: '',
+    employment: '',
+    duration: '2025 – Present',
+    location: '',
+    description: '',
+    url: '',
+  },
   {
     mark: 'SW',
     company: 'Southwest Urgent Care & Family Practice',
@@ -81,16 +91,6 @@ export const experiences: Experience[] = [
     duration: 'Sep 2021 – Dec 2022',
     location: '',
     description: 'Worked with Python to build practical software and automation solutions.',
-    url: '',
-  },
-  {
-    mark: 'DH',
-    company: 'Dream Home Estates',
-    role: '',
-    employment: '',
-    duration: '2025 – Present',
-    location: '',
-    description: '',
     url: '',
   },
 ];
@@ -238,7 +238,7 @@ export function SiteShell({ activePath, children }: { activePath: string; childr
               rel="noreferrer"
               aria-label="Connect with Muhammad Umer on LinkedIn"
             >
-              <ArrowUpRight size={14} /> LinkedIn
+              <BriefcaseBusiness size={14} /> LinkedIn
             </a>
 
             <a
@@ -248,6 +248,15 @@ export function SiteShell({ activePath, children }: { activePath: string; childr
               aria-label="Message Muhammad Umer on WhatsApp"
             >
               <MessageCircle size={14} /> WhatsApp
+            </a>
+
+            <a
+              href="https://github.com/hafizamaryamarshad-ali/muhammad-umer-portfolio"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="View Muhammad Umer's portfolio on GitHub"
+            >
+              <Code2 size={14} /> GitHub
             </a>
           </div>
 
@@ -430,6 +439,21 @@ export function ContactPanel() {
   return (
     <div className="contact-panel">
       <div className="contact-copy">
+        <div className="contact-links" aria-label="Social and contact links">
+          <a href="https://www.linkedin.com/in/itsmuhammadumer/" target="_blank" rel="noreferrer">
+            <BriefcaseBusiness size={18} aria-hidden="true" />
+            <span><strong>LinkedIn</strong><small>Professional profile</small></span>
+          </a>
+          <a href="https://wa.me/923000335194" target="_blank" rel="noreferrer">
+            <MessageCircle size={18} aria-hidden="true" />
+            <span><strong>WhatsApp</strong><small>Start a conversation</small></span>
+          </a>
+          <a href="https://github.com/hafizamaryamarshad-ali/muhammad-umer-portfolio" target="_blank" rel="noreferrer">
+            <Code2 size={18} aria-hidden="true" />
+            <span><strong>GitHub</strong><small>View portfolio source</small></span>
+          </a>
+        </div>
+
         <div className="contact-flow">
           <span>What happens next</span>
           <Flow steps={['Your task', 'A clear plan', 'Next step']} />
