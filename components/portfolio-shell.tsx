@@ -39,8 +39,8 @@ export const experiences: Experience[] = [
     role: 'Automation Engineer',
     employment: '',
     duration: '2022 – Present',
-    location: '',
-    description: 'Built job application bots for different job platforms.',
+    location: 'New York, United States',
+    description: 'Worked on AI SaaS products, including WhisperMe Interview Assistant and an AI Auto Apply Agent.',
     url: 'https://www.linkedin.com/company/82534194/',
   },
   {
@@ -59,8 +59,8 @@ export const experiences: Experience[] = [
     role: '',
     employment: 'Freelance',
     duration: '2023 – 2026',
-    location: '',
-    description: '',
+    location: 'Nigeria',
+    description: 'Built job application bots for different job platforms.',
     url: '',
   },
   {
@@ -79,8 +79,8 @@ export const experiences: Experience[] = [
     role: '',
     employment: 'Freelance',
     duration: '2023 – 2024',
-    location: '',
-    description: '',
+    location: 'California, United States',
+    description: 'Automated real estate workflows.',
     url: '',
   },
 ];
