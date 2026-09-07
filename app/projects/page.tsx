@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   return <SiteShell activePath="/projects">
-    <PageHeader kicker="Projects" title="Automation built for real work." intro="Each project shows the problem, what I built, the tools I used, and the result it was designed to deliver." />
+    <PageHeader kicker="Projects" title="Automation built for real work." intro="Each project shows the problem, the outcome, and the automation flow connecting them." />
     <Reveal className="section work-cases projects-work-cases"><CaseStudyList /></Reveal>
   </SiteShell>;
 }

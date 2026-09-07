@@ -520,6 +520,9 @@ html.dark{color-scheme:dark}
 .page-projects .engineering-case{border-radius:6px;box-shadow:0 14px 34px rgb(17 20 22 / 5%);transition:transform .25s,box-shadow .25s,border-color .25s}
 .page-projects .engineering-case:hover{border-color:color-mix(in srgb,var(--inner-blue) 45%,var(--border));box-shadow:0 22px 44px rgb(21 94 239 / 10%)}
 .page-projects .engineering-case>header h3{font-family:Georgia,'Times New Roman',serif;font-weight:400}
+.page-projects .engineering-case>header{grid-template-columns:1fr}
+.page-projects .case-core{grid-template-columns:.82fr 1.18fr}
+.page-projects .case-workflow{border-bottom:0}
 
 /* Experience adopts the sticky guide and scrolling-card composition. */
 .page-experience .experience-layout{width:min(1240px,calc(100% - 48px));grid-template-columns:minmax(260px,.58fr) minmax(0,1.42fr);padding-top:140px}

@@ -297,7 +297,6 @@ export function CaseStudyList({ limit }: { limit?: number }) {
         >
           <header>
             <h3>{project.title}</h3>
-            <span className="case-status"><i /> Documented</span>
           </header>
 
           <div className="case-core">
@@ -306,9 +305,9 @@ export function CaseStudyList({ limit }: { limit?: number }) {
               <p>{project.problem}</p>
             </div>
 
-            <div className="case-approach">
-              <h4>Approach</h4>
-              <p>{project.approach}</p>
+            <div className="case-outcome">
+              <h4>Outcome</h4>
+              <p>{project.outcome}</p>
             </div>
           </div>
 
@@ -317,23 +316,6 @@ export function CaseStudyList({ limit }: { limit?: number }) {
             <Flow steps={project.workflow} animated />
           </div>
 
-          <div className="case-lower">
-            <div>
-              <h4>Technology</h4>
-              <p>{project.technology}</p>
-            </div>
-
-            <div>
-              <h4>Outcome</h4>
-              <p>{project.outcome}</p>
-            </div>
-          </div>
-
-          <footer>
-            <div className="tag-list">
-              {project.tags.map(tag => <span key={tag}>{tag}</span>)}
-            </div>
-          </footer>
         </motion.article>
       ))}
     </div>
