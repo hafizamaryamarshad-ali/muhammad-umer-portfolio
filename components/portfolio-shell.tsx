@@ -3,15 +3,11 @@
 import { ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, Code2, Menu, MessageCircle, Moon, Send, Sun, X } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { FormEvent, ReactNode, useEffect, useState } from 'react';
+import { projects } from '@/lib/projects';
 
 export const navItems = [['Home', '/'], ['Experience', '/experience'], ['Projects', '/projects'], ['Contact', '/contact']] as const;
 
-export const projects = [
-  { number: '01', title: 'Automated Business Data Entry', problem: 'Staff had to copy the same information between business systems.', approach: 'I built a workflow that checks, formats, and sends each record to the right system.', technology: 'Python, APIs, field mapping, and data checks.', workflow: ['Source data', 'Validation', 'Transformation', 'System update'], outcome: 'Less manual data entry and more consistent records.', tags: ['Python', 'APIs', 'Automation', 'Data Processing'] },
-  { number: '02', title: 'AI Document Processing Workflow', problem: 'Important information was locked inside documents and prepared by hand.', approach: 'I built a document workflow that extracts the needed details and checks the result.', technology: 'Python, OCR, AI extraction, confidence checks, and APIs.', workflow: ['Upload', 'Extraction', 'Validation', 'Structured output'], outcome: 'Document data became easier to review and reuse.', tags: ['Python', 'OCR', 'AI', 'Data Extraction', 'APIs'] },
-  { number: '03', title: 'CRM & Workflow Integration', problem: 'Teams had to update several disconnected tools with the same information.', approach: 'I connected the tools so updates could move between them automatically.', technology: 'REST APIs, webhooks, Python, authentication, and error handling.', workflow: ['Trigger', 'API', 'Data processing', 'CRM update', 'Notification'], outcome: 'Fewer repeated updates and better alignment between systems.', tags: ['Python', 'REST APIs', 'Webhooks', 'Automation'] },
-  { number: '04', title: 'Automated Web Workflow', problem: 'A repetitive task had to be completed through a website with no suitable API.', approach: 'I built a browser workflow with clear checks and visible failure points.', technology: 'Python, Playwright, page checks, and structured data collection.', workflow: ['Browser input', 'Automation logic', 'Validation', 'Action'], outcome: 'A repeatable web task that is easier to run and troubleshoot.', tags: ['Python', 'Playwright', 'Browser Automation', 'Data Processing'] },
-] as const;
+export { projects };
 
 export const processSteps = [
   ['Understand', 'Learn how the task works today and where time is being lost.'],
@@ -91,7 +87,7 @@ export function Flow({ steps, animated = false }: { steps: readonly string[]; an
       {steps.map((step, index) => (
         <span className="flow-step" key={step}>
           <b><i />{step}</b>
-          {index < steps.length - 1 && <ArrowRight aria-hidden="true" />}
+          {index < steps.length - 1 && <ArrowRight className="flow-connector" aria-hidden="true" />}
         </span>
       ))}
     </div>
@@ -286,18 +282,47 @@ export function ProfilePanel({ compact = false, editorial = false }: { compact?:
 export function CaseStudyList({ limit }: { limit?: number }) {
   const items = limit ? projects.slice(0, limit) : projects;
 
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (!id) return;
+    const timer = window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'instant' }));
+    return () => window.clearTimeout(timer);
+  }, []);
+
   return (
     <div className="case-study-list">
       {items.map(project => (
         <motion.article
           className="engineering-case"
+          id={project.slug}
           key={project.number}
           whileHover={{ y: -3 }}
           transition={{ duration: .2 }}
         >
           <header>
             <h3>{project.title}</h3>
+            <div className="case-header-meta">
+              <span className="case-industry">{project.industry}</span>
+              {project.demoUrl && (
+                <a className="case-live-link" href={project.demoUrl} target="_blank" rel="noreferrer">
+                  See Demo <ArrowUpRight size={15} />
+                </a>
+              )}
+              {project.liveUrl && (
+                <a className="case-live-link" href={project.liveUrl} target="_blank" rel="noreferrer">
+                  Visit Website <ArrowUpRight size={15} />
+                </a>
+              )}
+            </div>
           </header>
+
+          {project.media && (
+            <div className="case-media">
+              <video controls preload="metadata">
+                <source src={project.media} />
+              </video>
+            </div>
+          )}
 
           <div className="case-core">
             <div className="case-problem">

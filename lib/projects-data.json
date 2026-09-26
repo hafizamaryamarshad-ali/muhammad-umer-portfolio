@@ -1,0 +1,562 @@
+{
+  "projects": [
+    {
+      "name": "Drawing Number Auditor",
+      "industries": [
+        "Engineering",
+        "Industrial"
+      ],
+      "problem": "Industrial drawing packages (P&IDs, termination sheets, vendor drawings) must be checked against a TOP list so misnamed or misplaced files are caught.",
+      "business_effect": "Reduces manual drawing-package QA for engineering turnover packages and lowers the chance of wrong drawings being filed.",
+      "automation_flow": "Load TOP LIST.xlsx drawing indexes → convert PDF pages to images (Poppler) → crop title-block region → OpenAI vision extracts drawing number → fuzzy-match against filename and expected number → move file into result folders and log CSV.",
+      "technologies": [
+        "Python",
+        "OpenAI Vision API",
+        "OpenCV",
+        "pdf2image/Poppler",
+        "pandas",
+        "PyPDF2",
+        "Pillow"
+      ]
+    },
+    {
+      "name": "Audit Helper",
+      "industries": [
+        "Engineering",
+        "Industrial"
+      ],
+      "problem": "Large drawing packages need title-block data, revision/approval dates, and stamps checked without reading every PDF by hand.",
+      "business_effect": "Speeds drawing-package QA and title-block data capture for industrial turnover packages.",
+      "automation_flow": "Convert PDF pages to images → template-match company title-block ROIs with OpenCV/Tesseract → compare extracted dates/fields to the drawing index → optionally stamp PDFs and write audit/populate CSVs.",
+      "technologies": [
+        "Python",
+        "OpenCV",
+        "Tesseract OCR",
+        "pdf2image/Poppler",
+        "tabula-py",
+        "PyPDF2",
+        "reportlab",
+        "pandas",
+        "Pillow"
+      ]
+    },
+    {
+      "name": "Turnover Package File Manager",
+      "industries": [
+        "Engineering",
+        "Industrial"
+      ],
+      "problem": "Turnover packages must be assembled from many P&ID, termination, detail, one-line, and location drawings listed on a spreadsheet.",
+      "business_effect": "Removes repetitive manual filing when assembling engineering turnover packages.",
+      "automation_flow": "Read TURN OVER PACKAGE TEMPLATE 5.xlsx → clean drawing-number columns → for each package, find matching files in SYSTEM DRAWINGS → copy into destination subfolders → log misses.",
+      "technologies": [
+        "Python",
+        "pandas",
+        "openpyxl"
+      ]
+    },
+    {
+      "name": "PDF2Word Form Populator",
+      "industries": [
+        "Engineering",
+        "Industrial"
+      ],
+      "problem": "Form fields on Word templates had to be typed from corresponding PDF packages.",
+      "business_effect": "Cuts manual transcription from PDF packages into Word forms.",
+      "automation_flow": "Place PDFs in pkgs and docx templates in forms → render PDF pages (PyMuPDF) → Tesseract OCR → map extracted text into Word fields → save filled forms.",
+      "technologies": [
+        "Python",
+        "Tesseract OCR",
+        "OpenCV",
+        "PyMuPDF",
+        "python-docx",
+        "PyPDF2",
+        "PyInstaller",
+        "tkinter"
+      ]
+    },
+    {
+      "name": "Instagram Growth Bot",
+      "industries": [
+        "Social Media",
+        "Marketing"
+      ],
+      "problem": "A client needed to operate many Instagram accounts for growth (follow/like/post) without doing each action manually.",
+      "business_effect": "Increases capacity to run Instagram growth actions across many accounts with less manual clicking.",
+      "automation_flow": "Load accounts.txt → spawn Chrome profiles (optional proxies) → login (manual email OTP if needed) → execute follow/like/story/reel-post permissions → persist session profiles.",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "Chrome WebDriver",
+        "pyautogui",
+        "multiprocessing"
+      ]
+    },
+    {
+      "name": "Indeed Employer Resume Scraper",
+      "industries": [
+        "Recruitment"
+      ],
+      "problem": "Recruiters needed bulk export of resumes and candidate details from Indeed Employer, which has no convenient bulk download.",
+      "business_effect": "Reduces manual resume downloading from Indeed Employer and speeds candidate sourcing.",
+      "automation_flow": "Open employers.indeed.com/candidates → filter by job title or status tab → iterate candidate cards → download resume → append row to CSV and mark Excel sessions Done.",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "Chrome WebDriver",
+        "pandas",
+        "pyautogui",
+        "tkinter"
+      ]
+    },
+    {
+      "name": "DC Sask Work-Package OCR Form Filler",
+      "industries": [
+        "Engineering",
+        "Industrial"
+      ],
+      "problem": "Maintenance/work-package PDFs had to be transcribed into Word forms by hand.",
+      "business_effect": "Reduces manual data entry from industrial work-package PDFs into forms.",
+      "automation_flow": "Place PDFs in pkgs → preprocess pages → Tesseract OCR → regex-extract Maximo/location/tag/plant fields → populate docx forms.",
+      "technologies": [
+        "Python",
+        "Tesseract OCR",
+        "PyMuPDF",
+        "PyPDF2",
+        "python-docx",
+        "tkinter"
+      ]
+    },
+    {
+      "name": "Dream Companies Property Purchasing Bot",
+      "industries": [
+        "Real Estate"
+      ],
+      "problem": "A brokerage needed to submit property offers quickly and repeatedly across CRMLS/CAR/Gmail/e-sign without doing each step manually.",
+      "business_effect": "Increases offer-submission capacity and shortens time from listing alert to sent offer.",
+      "automation_flow": "Poll Gmail for ROBOT-tagged MLS emails (or local list) → scrape CRMLS listing → fill CAR transaction/offer forms → wait for signature-request emails → e-sign → draft/send offer email with attachments within a configured time window.",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "Chrome profiles",
+        "Gmail API",
+        "YAML config"
+      ]
+    },
+    {
+      "name": "WhisperMe",
+      "industries": [
+        "Recruitment",
+        "HR Tech"
+      ],
+      "problem": "Job seekers need to tailor resumes, mass-apply on job boards, and get live interview help without doing every click and rewrite themselves.",
+      "business_effect": "Packages resume tailoring, automated job applications, and interview assistance into a credit-based product that can reduce manual apply/interview prep time.",
+      "automation_flow": "User signs up on wm-website → builds/uploads resume (OpenAI parse) and configures LinkedIn/Dice bots → desktop apps authenticate with API key → fetch resumes/questions/credits → apply on job boards or run interview assistance against wm-backend-server → usage deducted; Stripe webhooks add credits.",
+      "technologies": [
+        "Python",
+        "Flask",
+        "MongoDB",
+        "OpenAI",
+        "Stripe",
+        "Bootstrap",
+        "Docker",
+        "FastAPI",
+        "PyQt5",
+        "PySide6",
+        "Selenium",
+        "keyring"
+      ]
+    },
+    {
+      "name": "WhisperMe Autonomous Job Apply Agent",
+      "industries": [
+        "Recruitment",
+        "HR Tech"
+      ],
+      "problem": "Company career pages and ATS forms (Greenhouse, Lever, Workday, Ashby, etc.) differ too much for hardcoded Easy Apply bots.",
+      "business_effect": "Extends job-apply automation beyond LinkedIn/Dice Easy Apply to arbitrary ATS forms, increasing apply coverage.",
+      "automation_flow": "CLI URL + profile.json → navigate with stealth Chrome → classify JD vs form → locate Apply if needed → LLM-guided form fill → submit or dry-run.",
+      "technologies": [
+        "Python",
+        "Playwright",
+        "playwright-stealth",
+        "OpenAI",
+        "Pydantic",
+        "BeautifulSoup"
+      ]
+    },
+    {
+      "name": "Browser-as-a-Service (BAAS)",
+      "industries": [
+        "Software Infrastructure",
+        "Recruitment"
+      ],
+      "problem": "Job-apply and other automations need isolated, fingerprint-resistant browser sessions that can be taken over manually.",
+      "business_effect": "Provides reusable stealth browser infrastructure so automations scale without each bot managing its own fragile Chrome setup.",
+      "automation_flow": "API creates a Playwright session from a warm pool → Redis tracks state → client connects via WebSocket/CDP/VNC → automation or human takeover → session timeout/recycle.",
+      "technologies": [
+        "TypeScript",
+        "Express",
+        "Playwright",
+        "Redis",
+        "Docker",
+        "WebSocket",
+        "Kubernetes"
+      ]
+    },
+    {
+      "name": "Instagram Auto DM",
+      "industries": [
+        "Social Media",
+        "Marketing"
+      ],
+      "problem": "Outreach to commenters on Instagram posts is slow if done one-by-one in the app.",
+      "business_effect": "Increases Instagram comment-to-DM outreach volume versus manual messaging.",
+      "automation_flow": "One-time login saves scraper and DM sessions → scrape comments from a configured post URL → clean usernames → send message.txt DMs with rate-limit delays.",
+      "technologies": [
+        "Python",
+        "Playwright",
+        "CSV"
+      ]
+    },
+    {
+      "name": "Fredej Anesthesia PDF-to-Word",
+      "industries": [
+        "Healthcare"
+      ],
+      "problem": "Consent PDFs linked from a spreadsheet needed to be turned into editable Word files in bulk.",
+      "business_effect": "Removes per-file download and copy-paste when converting consent PDFs to Word.",
+      "automation_flow": "Read Anesthesia Consent.xlsx PDF links → download each PDF → extract text with PyPDF2 → write .docx → log status.",
+      "technologies": [
+        "Python",
+        "pandas",
+        "requests",
+        "PyPDF2",
+        "python-docx"
+      ]
+    },
+    {
+      "name": "PrivateEmail Outreach Bot",
+      "industries": [
+        "Marketing"
+      ],
+      "problem": "Bulk or scheduled email from PrivateEmail's web UI is tedious and the web client needs extra clicks.",
+      "business_effect": "Lets a user send recurring PrivateEmail outreach without sitting in the web composer.",
+      "automation_flow": "First-time login saves Chrome profile → load contacts → open privateemail.com/appsuite → compose and send (extension can auto-click) → honor schedule window.",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "Chrome profiles",
+        "tkinter",
+        "Chrome extension"
+      ]
+    },
+    {
+      "name": "Clinic Automation (Practice Fusion + Availity)",
+      "industries": [
+        "Healthcare"
+      ],
+      "problem": "A clinic had to schedule patients, write notes, check insurance eligibility, and keep an external patient sheet updated across Practice Fusion and Availity.",
+      "business_effect": "Reduces front-desk and clinical documentation work and speeds insurance eligibility checks for the clinic.",
+      "automation_flow": "Pull patients from patientsheet.com / YAML bot config → Selenium logs into Practice Fusion → create appointments, update charts, generate SOAP notes (voice/AI) → Availity bot checks eligibility, generates PDF, posts to API → PRN bot writes pfStatus back to patientsheet.com.",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "Flask",
+        "PyYAML",
+        "OpenAI/ChatGPT",
+        "requests",
+        "pyautogui"
+      ]
+    },
+    {
+      "name": "Alleva Healthcare Operations POC",
+      "industries": [
+        "Healthcare"
+      ],
+      "problem": "Care teams on the Alleva EHR had to manually check every active, on-site client to make sure an urgent alert was raised when none had been logged in the past 24 hours.",
+      "business_effect": "Healthcare demo proof of concept: replaces manual per-client alert checks with a scheduled, idempotent workflow that creates each alert once per day, retries failures safely, and records every action in an audit-ready operations dashboard.",
+      "automation_flow": "Sync Alleva clients → Filter on-site clients → Check 24h alert rule → Create alert & notify → Audit, retry, dashboard",
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "PostgreSQL",
+        "SQLAlchemy",
+        "Alembic",
+        "APScheduler",
+        "httpx",
+        "Streamlit",
+        "Docker Compose",
+        "Alleva API"
+      ]
+    },
+    {
+      "name": "Jerrican NHS Jobs Automation",
+      "industries": [
+        "Healthcare",
+        "Recruitment"
+      ],
+      "problem": "Healthcare job applicants and agencies need to apply at volume on NHS TRAC and related boards, reuse answers, and write supporting statements.",
+      "business_effect": "Increases NHS application throughput and reduces manual form-filling and statement writing for an agency/client operation.",
+      "automation_flow": "Users/agents manage clients on the Flask site → admin agent assigns daily targets → TRAC/Scot/HSCNI bots log in, scrape jobs, fill applications with ChatGPT/RAG answers → status syncs to MongoDB → optional supporting-statement API.",
+      "technologies": [
+        "Python",
+        "Flask",
+        "MongoDB",
+        "Selenium",
+        "OpenAI",
+        "ChromaDB",
+        "Gmail API",
+        "PyPDF2",
+        "python-docx"
+      ]
+    },
+    {
+      "name": "NHS Supporting Statement Writer",
+      "industries": [
+        "Healthcare",
+        "Recruitment"
+      ],
+      "problem": "NHS applications require long supporting statements matched to each vacancy.",
+      "business_effect": "Sells or packages NHS statement writing so applicants spend less time drafting per vacancy.",
+      "automation_flow": "User uploads/pastes CV and job description → OpenAI generates statement → web users pay via Stripe; desktop users log in and call /generate_nhs_supporting_statement.",
+      "technologies": [
+        "Python",
+        "Flask",
+        "MongoDB/MongoEngine",
+        "OpenAI GPT-4",
+        "Stripe",
+        "SendGrid",
+        "PyQt5",
+        "PyPDF2",
+        "python-docx"
+      ]
+    },
+    {
+      "name": "UK Universities Course Scraper",
+      "industries": [
+        "Education"
+      ],
+      "problem": "Course catalogs needed to be collected into a structured list (title, school, grades, dates, URLs).",
+      "business_effect": "Builds a course database faster than manual copy from university sites.",
+      "automation_flow": "Open course listing URL → collect course links → scrape each course page → ChatGPT fills location/London flags → write tabular output.",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "OpenAI",
+        "pandas"
+      ]
+    },
+    {
+      "name": "Megan Smith MeritHub Recordings Downloader",
+      "industries": [
+        "Education"
+      ],
+      "problem": "Class recordings on merithub.com had to be collected per student from Drive folders by hand.",
+      "business_effect": "Removes repetitive downloading of student class recordings from MeritHub.",
+      "automation_flow": "Selenium opens merithub.com users/Drive → find Recordings → scrape title/date/link per student → download in a thread pool, skipping already-saved URLs.",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "pandas",
+        "requests"
+      ]
+    },
+    {
+      "name": "Crime Club Game Bot",
+      "industries": [
+        "Gaming"
+      ],
+      "problem": "Repetitive browser game tasks (and captcha friction) needed automation for a client milestone.",
+      "business_effect": "Reduces time spent repeating in-game tasks in the browser.",
+      "automation_flow": "Open crime-club.nl → login → run configured task numbers using page text extraction.",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "Chrome profiles"
+      ]
+    },
+    {
+      "name": "TTB Business Payment Bot",
+      "industries": [
+        "Banking",
+        "FinTech"
+      ],
+      "problem": "Bank transfers on ttbbusinessone.com require manual form filling and OTP entry.",
+      "business_effect": "Speeds repeated business-bank transfers that otherwise need a person at the keyboard for forms and OTPs.",
+      "automation_flow": "Launch Chromium → restore cookies / login → New payment → PromptPay or account transfer → wait for OTP in otp_messages → submit confirmation.",
+      "technologies": [
+        "Python",
+        "Playwright",
+        "PostgreSQL/psycopg2",
+        "Twilio webhook (OTP DB)"
+      ]
+    },
+    {
+      "name": "Maison Cuir Leather Storefront",
+      "industries": [
+        "E-commerce",
+        "Fashion & Retail"
+      ],
+      "problem": "A leather brand needed a storefront page and a written spec document.",
+      "business_effect": "Gives the brand a public product page and a reusable written spec.",
+      "automation_flow": "Browse index.html (Tailwind CDN) for the storefront; run build_spec.js to emit a structured .docx specification.",
+      "technologies": [
+        "HTML",
+        "Tailwind CSS",
+        "Node.js",
+        "docx"
+      ]
+    },
+    {
+      "name": "Nas.io Payment Bot",
+      "industries": [
+        "FinTech",
+        "Payments"
+      ],
+      "problem": "Nas.io payment/checkout steps had to be done manually for each charge or link.",
+      "business_effect": "Lets another system trigger Nas.io payments/links without a person using the Nas.io UI.",
+      "automation_flow": "POST amount/title/card or payment-link fields → Playwright opens Nas.io → create link or fill payment form → return status; optional IMAP/email listener.",
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "Playwright",
+        "Pydantic",
+        "imap-tools"
+      ]
+    },
+    {
+      "name": "UniswapBot",
+      "industries": [
+        "Cryptocurrency"
+      ],
+      "problem": "Liquidity-range / swap monitoring on Uniswap required sitting in the browser and MetaMask.",
+      "business_effect": "Reduces manual watching of Uniswap positions for a configured pair.",
+      "automation_flow": "User sets network, pair, range, and MetaMask password → bot thread opens Uniswap in Chrome → monitors range/balance and performs configured swap actions.",
+      "technologies": [
+        "Python",
+        "tkinter",
+        "Selenium",
+        "Chrome profiles"
+      ]
+    },
+    {
+      "name": "Invoice OCR Experiments",
+      "industries": [
+        "Accounting",
+        "Finance"
+      ],
+      "problem": "Invoice images needed structured text/table extraction rather than full-page typing.",
+      "business_effect": "Explores faster invoice data capture; completeness of a single production pipeline is uncertain.",
+      "automation_flow": "Load invoice image → preprocess/bg-remove or find table contours → Tesseract OCR with coordinates → optional GUI crop → text/table output.",
+      "technologies": [
+        "Python",
+        "OpenCV",
+        "Tesseract OCR",
+        "Pillow",
+        "tkinter"
+      ]
+    },
+    {
+      "name": "Pascoal Tando VFS Visa Bot",
+      "industries": [
+        "Immigration"
+      ],
+      "problem": "VFS Global appointment slots and OTP login are time-sensitive and tedious to retry by hand.",
+      "business_effect": "Increases chances of completing a VFS appointment without constant manual refreshing and OTP typing.",
+      "automation_flow": "Open visa.vfsglobal.com/ago/en/prt/login → enter credentials → read OTP from Gmail → continue appointment/booking steps.",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "SeleniumBase",
+        "Gmail API"
+      ]
+    },
+    {
+      "name": "psuch3 Desktop Data Entry RPA",
+      "industries": [
+        "Operations"
+      ],
+      "problem": "A Windows app without an API required repetitive project/record data entry.",
+      "business_effect": "Cuts repetitive desktop data entry for that application.",
+      "automation_flow": "Match on-screen buttons via PNG templates → type project name/number → tab through fields from a record dict → submit.",
+      "technologies": [
+        "Python",
+        "PyAutoGUI"
+      ]
+    },
+    {
+      "name": "Randy Dropship & Marketplace Tools",
+      "industries": [
+        "E-commerce",
+        "Retail"
+      ],
+      "problem": "A dropshipper needed fast checkout/address entry across many retailer sites and product data/listing help on marketplaces.",
+      "business_effect": "Speeds dropship checkout and marketplace sourcing/listing versus doing each site by hand.",
+      "automation_flow": "User opens a retailer cart/checkout → presses a hotkey → Selenium fills address/checkout notes → scrapers collect listings by keyword → Mercari bot lists items from a spreadsheet.",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "BeautifulSoup",
+        "keyboard",
+        "pyperclip",
+        "pandas",
+        "openpyxl"
+      ]
+    },
+    {
+      "name": "Tick-mark Form Text Extraction",
+      "industries": [
+        "Document Processing"
+      ],
+      "problem": "Checked/ticked fields on scanned documents are hard to harvest without reading each page.",
+      "business_effect": "Can extract answers from ticked paper forms faster than manual review.",
+      "automation_flow": "Load scanned form + tick template → template match above a threshold → crop ROI next to each tick → Tesseract OCR → save processed images.",
+      "technologies": [
+        "Python",
+        "OpenCV",
+        "Tesseract OCR",
+        "Jupyter",
+        "Pillow"
+      ]
+    },
+    {
+      "name": "Twinblu Property Data Platform",
+      "industries": [
+        "Real Estate"
+      ],
+      "problem": "Investors needed filtered UK property lists (repossessed, auction, HMO, etc.) without scraping sites by hand each time.",
+      "business_effect": "Gives a reusable property-research database instead of one-off Rightmove/propertydata searches.",
+      "automation_flow": "User picks a strategy category and postcode/radius → query MongoDB → if empty, Selenium/scraper pulls live listings → store and display; optional URL spreadsheet checks image status/size.",
+      "technologies": [
+        "Python",
+        "Django",
+        "Flask",
+        "MongoDB",
+        "Selenium",
+        "BeautifulSoup",
+        "pandas",
+        "Pillow"
+      ]
+    },
+    {
+      "name": "Automation Forge Hub",
+      "industries": [
+        "Professional Services",
+        "Marketing"
+      ],
+      "problem": "The freelance automation practice needed a public site to present services and manage leads/projects in-browser.",
+      "business_effect": "Provides a professional web presence and a place to capture project interest.",
+      "automation_flow": "Visitor browses services/projects and submits contact; admin routes manage team/projects/settings in the UI (frontend-only as built).",
+      "technologies": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "React Router",
+        "TanStack Query"
+      ]
+    }
+  ]
+}
