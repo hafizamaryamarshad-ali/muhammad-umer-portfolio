@@ -2,7 +2,8 @@
 
 import { ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, Code2, Menu, MessageCircle, Moon, Send, Sun, X } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { FormEvent, ReactNode, useEffect, useState } from 'react';
+import { FormEvent, ReactNode, useEffect, useRef, useState } from 'react';
+import { budgetOptions, contactLimits, contactMethods, validateContact } from '@/lib/contact';
 import { projects } from '@/lib/projects';
 
 export const navItems = [['Home', '/'], ['Experience', '/experience'], ['Projects', '/projects'], ['Contact', '/contact']] as const;
@@ -423,10 +424,47 @@ export function ExperienceList() {
 
 export function ContactPanel() {
   const [formNote, setFormNote] = useState('');
+  const [sending, setSending] = useState(false);
+  const sendingRef = useRef(false);
 
-  const submitForm = (event: FormEvent<HTMLFormElement>) => {
+  const submitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setFormNote('This form is ready for a contact service to be connected. No message has been sent.');
+    if (sendingRef.current) return;
+
+    const form = event.currentTarget;
+    const result = validateContact(Object.fromEntries(new FormData(form)));
+    if (!result.ok) {
+      setFormNote(result.message);
+      return;
+    }
+
+    sendingRef.current = true;
+    setSending(true);
+    setFormNote('Sending your message…');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(result.data),
+        signal: AbortSignal.timeout(30_000),
+      });
+      const body = (await response.json().catch(() => null)) as { success?: boolean; message?: string } | null;
+
+      if (response.status === 201 && body?.success) {
+        form.reset();
+        setFormNote('Thank you. Your message has been sent, and I will get back to you soon.');
+      } else {
+        setFormNote(body?.message ?? 'Your message could not be sent. Please try again later.');
+      }
+    } catch (error) {
+      setFormNote(error instanceof DOMException && error.name === 'TimeoutError'
+        ? 'The request took too long. Please try again.'
+        : 'Your message could not be sent. Please check your connection and try again.');
+    } finally {
+      sendingRef.current = false;
+      setSending(false);
+    }
   };
 
   return (
@@ -457,27 +495,63 @@ export function ContactPanel() {
         <div className="form-row">
           <label>
             Name
-            <input name="name" type="text" autoComplete="name" required placeholder="Your name" />
+            <input name="name" type="text" autoComplete="name" required maxLength={contactLimits.name} placeholder="Your name" />
           </label>
 
           <label>
             Email
-            <input name="email" type="email" autoComplete="email" required placeholder="you@example.com" />
+            <input name="email" type="email" autoComplete="email" required maxLength={contactLimits.email} placeholder="you@example.com" />
+          </label>
+        </div>
+
+        <div className="form-row">
+          <label>
+            Company
+            <input name="company" type="text" autoComplete="organization" required maxLength={contactLimits.company} placeholder="Your company" />
+          </label>
+
+          <label>
+            Phone (optional)
+            <input name="phone" type="tel" autoComplete="tel" maxLength={contactLimits.phone} placeholder="+92-300-1234567" />
+          </label>
+        </div>
+
+        <div className="form-row">
+          <label>
+            Estimated budget
+            <select name="estimated_budget" required defaultValue="">
+              <option value="" disabled>Choose a range</option>
+              {budgetOptions.map(option => <option key={option} value={option}>{option}</option>)}
+            </select>
+          </label>
+
+          <label>
+            Preferred contact
+            <select name="preferred_contact_method" required defaultValue="">
+              <option value="" disabled>Choose a method</option>
+              {contactMethods.map(option => <option key={option} value={option}>{option}</option>)}
+            </select>
           </label>
         </div>
 
         <label>
+          Timeline (optional)
+          <input name="timeline" type="text" maxLength={contactLimits.timeline} placeholder="e.g. 2-3 months" />
+        </label>
+
+        <label>
           Task
           <textarea
-            name="message"
+            name="project_description"
             required
+            maxLength={contactLimits.project_description}
             rows={6}
             placeholder="What task takes too much time today?"
           />
         </label>
 
-        <button className="button button-primary" type="submit">
-          Start a Conversation <Send size={16} />
+        <button className="button button-primary" type="submit" disabled={sending} aria-busy={sending}>
+          {sending ? 'Sending…' : 'Start a Conversation'} <Send size={16} />
         </button>
 
         {formNote && <p className="form-note" role="status">{formNote}</p>}
